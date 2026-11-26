@@ -11,6 +11,7 @@ use App\Http\Controllers\Portal\OverviewController;
 use App\Http\Controllers\ProjectFileController;
 use App\Http\Controllers\QuotationPrintController;
 use App\Http\Controllers\TicketScreenshotController;
+use App\Http\Controllers\Webhooks\GithubWebhookController;
 use App\Http\Middleware\RequireAdminTwoFactor;
 use App\Livewire\Admin\Activity\Index as ActivityIndex;
 use App\Livewire\Admin\Billing\Index as BillingIndex;
@@ -31,6 +32,7 @@ use App\Livewire\Portal\Negotiation as PortalNegotiation;
 use App\Livewire\Portal\NotificationCenter as PortalNotifications;
 use App\Livewire\Portal\ProjectOverview as PortalProjectOverview;
 use App\Models\Project;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
@@ -52,6 +54,13 @@ Route::get('tickets/{ticket}/screenshot', TicketScreenshotController::class)
 Route::get('payments/{payment}/proof', PaymentProofController::class)
     ->middleware(['auth', 'verified'])
     ->name('admin.payments.proof');
+
+// Webhook GitHub per proyek (T5-01): tanpa sesi/CSRF; keamanan lewat tanda tangan HMAC.
+Route::post('webhooks/github/{project}', GithubWebhookController::class)
+    ->where('project', '[0-9A-Za-z]{26}')
+    ->withoutMiddleware([ValidateCsrfToken::class])
+    ->middleware('throttle:300,1')
+    ->name('webhooks.github');
 
 /*
  * Pintu masuk tunggal setelah login. Semua alur Fortify (login, 2FA, passkey,

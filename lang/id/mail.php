@@ -77,4 +77,13 @@ return [
         'hint' => 'Isi balasan tidak disertakan di email ini. Buka portal untuk membacanya.',
         'action' => 'Buka portal',
     ],
+
+    'ops_alert' => [
+        'subject_failed_job' => '[Quix Code] Job gagal permanen',
+        'subject_queue_busy' => '[Quix Code] Antrean menumpuk',
+        'failed_job_intro' => 'Job :job di antrean ":queue" gagal permanen dan masuk tabel failed_jobs.',
+        'error' => 'Galat: :error',
+        'queue_busy_intro' => 'Antrean ":queue" (koneksi :connection) menumpuk: :size job menunggu.',
+        'outro' => 'Periksa worker (Supervisor) dan tabel failed_jobs. Peringatan serupa dibatasi satu kali per beberapa menit.',
+    ],
 ];

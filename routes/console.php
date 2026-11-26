@@ -17,3 +17,14 @@ Schedule::command('quotations:remind')->dailyAt('01:00')->withoutOverlapping();
 
 /* Digest email chat (T3-09): pesan belum dibaca dirangkum satu email per proyek dan pengirim. */
 Schedule::command('chat:digest')->everyFiveMinutes()->withoutOverlapping();
+
+/*
+ * Rekonsiliasi GitHub (T5-08): menambal commit yang webhook-nya terlewat. Pukul 09:00 WIB (02:00 UTC).
+ */
+Schedule::command('github:reconcile')->dailyAt('02:00')->withoutOverlapping();
+
+/* Pantau antrean (T5-09): memicu peringatan admin bila ada antrean yang menumpuk. */
+Schedule::command('queue:monitor', [
+    collect((array) config('quix.queues'))->map(fn (string $queue) => config('queue.default').':'.$queue)->implode(','),
+    '--max='.(int) config('quix.alerts.queue_max'),
+])->everyFiveMinutes()->withoutOverlapping();

@@ -54,6 +54,7 @@ class Project extends Model
             'progress_percent' => 'integer',
             'webhook_secret' => 'encrypted',
             'utm' => 'array',
+            'progress_pending_confirm_at' => 'datetime',
             'handover_at' => 'datetime',
             'budget_reference' => 'integer',
             'final_price' => 'integer',
@@ -327,6 +328,18 @@ class Project extends Model
         $this->completeReachedMilestones();
 
         return $this;
+    }
+
+    /** Progres otomatis (webhook GitHub) hanya diterapkan saat proyek dikerjakan atau dijeda (T5-04). */
+    public function acceptsAutomaticProgress(): bool
+    {
+        return in_array($this->status, [ProjectStatus::Active, ProjectStatus::OnHold], true);
+    }
+
+    /** Ada push [progress:100%] yang menunggu konfirmasi admin (T5-05). */
+    public function isAwaitingFullProgressConfirmation(): bool
+    {
+        return $this->progress_pending_confirm_at !== null && $this->status === ProjectStatus::Active;
     }
 
     public function budgetReferenceMoney(): ?Money

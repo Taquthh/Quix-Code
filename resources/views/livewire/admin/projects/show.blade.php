@@ -236,6 +236,77 @@
             </x-card>
 
             @if ($isAdmin)
+                @if ($project->isAwaitingFullProgressConfirmation())
+                    <div role="alert" data-banner="pending-100" class="rounded-card border border-amber-300 bg-amber-50 p-card text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
+                        <p class="font-semibold">{{ __('projects.webhook.pending_title') }}</p>
+                        <p class="mt-1">{{ __('projects.webhook.pending_body') }}</p>
+                        <flux:button class="mt-3" variant="primary" wire:click="confirmFullProgress" wire:confirm="{{ __('projects.webhook.confirm_prompt') }}">{{ __('projects.webhook.confirm_button') }}</flux:button>
+                    </div>
+                @endif
+
+                <x-card :title="__('projects.webhook.card_title')" data-section="github">
+                    @if (blank($project->github_repo))
+                        <p class="text-sm text-slate-600 dark:text-slate-400">{{ __('projects.webhook.repo_missing') }}</p>
+                    @else
+                        <dl class="flex flex-col gap-3 text-sm">
+                            <div>
+                                <dt class="text-xs text-slate-600 dark:text-slate-400">{{ __('projects.webhook.repo') }}</dt>
+                                <dd class="break-all font-medium text-slate-900 dark:text-slate-50">{{ $project->github_repo }}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs text-slate-600 dark:text-slate-400">{{ __('projects.webhook.endpoint') }}</dt>
+                                <dd class="break-all font-mono text-xs text-slate-900 dark:text-slate-50">{{ $webhookUrl }}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs text-slate-600 dark:text-slate-400">{{ __('projects.webhook.secret') }}</dt>
+                                <dd class="text-slate-900 dark:text-slate-50">{{ filled($project->webhook_secret) ? __('projects.webhook.secret_set') : __('projects.webhook.secret_unset') }}</dd>
+                            </div>
+                        </dl>
+
+                        @if ($revealedSecret)
+                            <div class="mt-3 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm dark:border-emerald-900 dark:bg-emerald-950/40" data-secret="revealed">
+                                <p class="font-semibold text-emerald-900 dark:text-emerald-200">{{ __('projects.webhook.revealed_title') }}</p>
+                                <p class="mt-1 break-all font-mono text-xs text-emerald-900 dark:text-emerald-200">{{ $revealedSecret }}</p>
+                                <p class="mt-2 text-xs text-emerald-900 dark:text-emerald-200">{{ __('projects.webhook.revealed_hint') }}</p>
+                                <flux:button class="mt-2" size="sm" wire:click="hideWebhookSecret">{{ __('projects.webhook.hide') }}</flux:button>
+                            </div>
+                        @endif
+
+                        <flux:button class="mt-4" wire:click="rotateWebhookSecret" wire:confirm="{{ __('projects.webhook.rotate_prompt') }}">
+                            {{ filled($project->webhook_secret) ? __('projects.webhook.rotate') : __('projects.webhook.generate') }}
+                        </flux:button>
+                        <p class="mt-2 text-xs text-slate-600 dark:text-slate-400">{{ __('projects.webhook.setup_hint') }}</p>
+                    @endif
+
+                    <h4 class="mt-5 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __('projects.webhook.recent_deliveries') }}</h4>
+                    @forelse ($deliveries as $delivery)
+                        <div wire:key="delivery-{{ $delivery->id }}" class="mt-1 flex items-start justify-between gap-2">
+                            <p class="break-words text-xs text-slate-700 dark:text-slate-300">
+                                {{ $delivery->received_at?->translatedFormat('d M H:i') }} · {{ $delivery->event }}
+                                @if (str_starts_with($delivery->delivery_id, 'reconcile-')) ({{ __('projects.webhook.reconciled') }}) @endif ·
+                                {{ __('projects.webhook.status.'.$delivery->status) }}
+                                @if ($delivery->error) · {{ $delivery->error }} @endif
+                            </p>
+                            @if ($delivery->signature_valid && in_array($delivery->status, ['failed', 'received'], true))
+                                <flux:button size="xs" wire:click="replayDelivery({{ $delivery->id }})" wire:confirm="{{ __('projects.webhook.replay_prompt') }}">{{ __('projects.webhook.replay') }}</flux:button>
+                            @endif
+                        </div>
+                    @empty
+                        <p class="mt-1 text-xs text-slate-600 dark:text-slate-400">{{ __('projects.webhook.no_deliveries') }}</p>
+                    @endforelse
+
+                    <h4 class="mt-5 text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __('projects.webhook.recent_commits') }}</h4>
+                    @forelse ($adminCommits as $commit)
+                        <p wire:key="admin-commit-{{ $commit->id }}" class="mt-1 break-words text-xs text-slate-700 dark:text-slate-300">
+                            <span class="font-mono">{{ substr($commit->commit_hash, 0, 7) }}</span>
+                            · {{ $commit->commit_message !== '' ? $commit->commit_message : __('portal.timeline_fallback') }}
+                            · {{ $commit->author?->name ?? $commit->author_email ?? '-' }}
+                        </p>
+                    @empty
+                        <p class="mt-1 text-xs text-slate-600 dark:text-slate-400">{{ __('projects.webhook.no_commits') }}</p>
+                    @endforelse
+                </x-card>
+
                 <x-card :title="__('projects.show.status_card')">
                     @if ($transitions === [])
                         <p class="text-sm text-slate-600 dark:text-slate-400">{{ __('projects.show.no_transitions') }}</p>

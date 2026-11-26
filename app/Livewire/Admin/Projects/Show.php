@@ -6,15 +6,19 @@ use App\Enums\ActivityAction;
 use App\Enums\MilestoneStatus;
 use App\Enums\ProjectStatus;
 use App\Enums\UserRole;
+use App\Jobs\ProcessGithubPush;
 use App\Models\ActivityLog;
 use App\Models\Project;
+use App\Models\ProjectGitCommit;
 use App\Models\ProjectMilestone;
 use App\Models\ProjectNote;
 use App\Models\User;
+use App\Models\WebhookDelivery;
 use App\Support\ActivityLogger;
 use Flux\Flux;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use InvalidArgumentException;
@@ -41,6 +45,10 @@ class Show extends Component
 
     /** String agar input kosong dari browser tidak menyebabkan TypeError; divalidasi lalu di-cast. */
     public string $progress = '0';
+
+    /** Secret webhook yang baru dibuat; hanya ditampilkan sekali, tidak pernah dibaca ulang dari database. */
+    #[Locked]
+    public ?string $revealedSecret = null;
 
     public string $statusReason = '';
 
@@ -144,6 +152,7 @@ class Show extends Component
 
         if ($old !== $new) {
             DB::transaction(function () use ($project, $old, $new) {
+                $project->progress_pending_confirm_at = null; // penyesuaian manual menggantikan permintaan 100% dari webhook
                 $project->setProgress($new);
                 ActivityLogger::changed(ActivityAction::ProgressChanged, $project, $old, $project->progress_percent);
             });
@@ -151,6 +160,97 @@ class Show extends Component
 
         $this->refreshProject();
         Flux::toast(variant: 'success', text: __('projects.toast.progress_updated'));
+    }
+
+    /** T5-05: konfirmasi admin atas [progress:100%] dari GitHub; baru di sini status pindah ke awaiting_final. */
+    public function confirmFullProgress(): void
+    {
+        $project = $this->project();
+        $this->authorize('transition', $project);
+
+        if (! $project->isAwaitingFullProgressConfirmation()) {
+            Flux::toast(variant: 'danger', text: __('projects.webhook.confirm_unavailable'));
+
+            return;
+        }
+
+        try {
+            DB::transaction(function () use ($project): void {
+                $old = (int) $project->progress_percent;
+                $from = $project->status;
+
+                $project->setProgress(100);
+                $project->transitionTo(ProjectStatus::AwaitingFinal, auth()->user(), __('projects.webhook.confirm_reason'));
+                $project->forceFill(['progress_pending_confirm_at' => null])->save();
+
+                ActivityLogger::log(ActivityAction::ProgressFullConfirmed, $project, ['old' => $old, 'new' => 100]);
+                ActivityLogger::changed(ActivityAction::StatusChanged, $project, $from, ProjectStatus::AwaitingFinal);
+            });
+        } catch (InvalidArgumentException) {
+            Flux::toast(variant: 'danger', text: __('projects.webhook.confirm_failed'));
+
+            return;
+        }
+
+        $this->refreshProject();
+        Flux::toast(variant: 'success', text: __('projects.webhook.confirmed'));
+    }
+
+    // ------------------------------------------------------------------ integrasi GitHub (T5-03)
+
+    public function rotateWebhookSecret(): void
+    {
+        $project = $this->project();
+        $this->authorize('manageIntegration', $project);
+
+        if (blank($project->github_repo)) {
+            Flux::toast(variant: 'danger', text: __('projects.webhook.repo_missing'));
+
+            return;
+        }
+
+        $secret = Str::random(48);
+        $hadSecret = filled($project->webhook_secret);
+
+        DB::transaction(function () use ($project, $secret, $hadSecret): void {
+            $project->forceFill(['webhook_secret' => $secret])->save();
+            ActivityLogger::log(ActivityAction::WebhookSecretRotated, $project, ['rotated' => $hadSecret]);
+        });
+
+        $this->revealedSecret = $secret;
+        $this->refreshProject();
+        Flux::toast(variant: 'success', text: __('projects.webhook.rotated'));
+    }
+
+    /** T5-08: proses ulang delivery gagal atau macet. Idempoten karena commit unik per proyek dan progres hanya naik. */
+    public function replayDelivery(int $deliveryId): void
+    {
+        $project = $this->project();
+        $this->authorize('manageIntegration', $project);
+
+        $delivery = WebhookDelivery::query()
+            ->where('project_id', $project->id)
+            ->where('event', 'push')
+            ->where('signature_valid', true)
+            ->whereIn('status', ['failed', 'received'])
+            ->find($deliveryId);
+
+        if ($delivery === null) {
+            Flux::toast(variant: 'danger', text: __('projects.webhook.not_replayable'));
+
+            return;
+        }
+
+        $delivery->forceFill(['status' => 'received', 'error' => null])->save();
+        ProcessGithubPush::dispatch($delivery->id);
+        ActivityLogger::log(ActivityAction::WebhookReplayed, $project, ['delivery' => $delivery->delivery_id]);
+
+        Flux::toast(variant: 'success', text: __('projects.webhook.replayed'));
+    }
+
+    public function hideWebhookSecret(): void
+    {
+        $this->revealedSecret = null;
     }
 
     // ------------------------------------------------------------------ tim
@@ -531,6 +631,16 @@ class Show extends Component
             'notes' => $isAdmin ? $project->notes()->with('author:id,name')->limit(20)->get() : collect(),
             'descriptions' => $activities->mapWithKeys(fn (ActivityLog $log) => [$log->id => $this->describe($log)]),
             'milestoneStatuses' => MilestoneStatus::cases(),
+            'webhookUrl' => $isAdmin ? route('webhooks.github', ['project' => $project->id]) : null,
+            'deliveries' => $isAdmin
+                ? WebhookDelivery::query()->where('project_id', $project->id)
+                    ->orderByDesc('id')->limit(5)
+                    ->get(['id', 'delivery_id', 'event', 'status', 'received_at', 'error', 'signature_valid'])
+                : collect(),
+            'adminCommits' => $isAdmin
+                ? ProjectGitCommit::query()->with('author:id,name')->where('project_id', $project->id)
+                    ->orderByDesc('pushed_at')->orderByDesc('id')->limit(5)->get()
+                : collect(),
         ])->title($project->title);
     }
 }

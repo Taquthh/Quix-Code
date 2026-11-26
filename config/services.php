@@ -28,6 +28,12 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    /* GitHub API (T5-08): token read-only dengan izin Contents/Metadata pada repo klien. */
+    'github' => [
+        'token' => env('GITHUB_TOKEN'),
+        'api_url' => env('GITHUB_API_URL', 'https://api.github.com'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

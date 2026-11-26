@@ -77,4 +77,13 @@ return [
         'hint' => 'The reply text is not included in this email. Open the portal to read it.',
         'action' => 'Open portal',
     ],
+
+    'ops_alert' => [
+        'subject_failed_job' => '[Quix Code] Job failed permanently',
+        'subject_queue_busy' => '[Quix Code] Queue is backing up',
+        'failed_job_intro' => 'Job :job on queue ":queue" failed permanently and was stored in failed_jobs.',
+        'error' => 'Error: :error',
+        'queue_busy_intro' => 'Queue ":queue" (connection :connection) is backing up: :size jobs waiting.',
+        'outro' => 'Check the worker (Supervisor) and the failed_jobs table. Similar alerts are limited to one per few minutes.',
+    ],
 ];

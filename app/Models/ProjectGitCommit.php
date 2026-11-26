@@ -12,7 +12,7 @@ class ProjectGitCommit extends Model
 
     protected $fillable = [
         'project_id', 'commit_hash', 'commit_message', 'progress_recorded',
-        'pushed_at', 'author_email', 'author_id',
+        'pushed_at', 'author_email', 'author_id', 'branch',
     ];
 
     /** Hash & email tidak boleh tampil ke klien, jadi disembunyikan dari serialisasi. */

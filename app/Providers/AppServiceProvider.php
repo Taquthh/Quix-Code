@@ -27,9 +27,12 @@ use App\Policies\ProjectPolicy;
 use App\Policies\QuotationPolicy;
 use App\Policies\TicketPolicy;
 use App\Services\Notifier;
+use App\Services\OpsAlerts;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Queue\Events\JobFailed;
+use Illuminate\Queue\Events\QueueBusy;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
@@ -76,6 +79,10 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(PaymentVerified::class, fn (PaymentVerified $e) => app(Notifier::class)->paymentVerified($e->payment));
         Event::listen(PaymentRejected::class, fn (PaymentRejected $e) => app(Notifier::class)->paymentRejected($e->payment));
         Event::listen(TicketCommentCreated::class, fn (TicketCommentCreated $e) => app(Notifier::class)->ticketReplied($e->comment));
+
+        // Peringatan operasional (T5-09): job gagal permanen dan antrean menumpuk.
+        Event::listen(JobFailed::class, fn (JobFailed $e) => app(OpsAlerts::class)->failedJob($e->job->resolveName(), (string) $e->job->getQueue(), $e->exception));
+        Event::listen(QueueBusy::class, fn (QueueBusy $e) => app(OpsAlerts::class)->queueBusy((string) config('queue.default'), (string) $e->queue, (int) $e->size));
 
         // Catat login terakhir (termasuk login via passkey dan 2FA).
         Event::listen(Login::class, function (Login $event) {

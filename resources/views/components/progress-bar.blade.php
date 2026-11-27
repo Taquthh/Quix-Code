@@ -17,7 +17,7 @@
     @endif
 
     <div role="progressbar" aria-label="{{ $name }}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ $percent }}"
-         class="w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800 {{ $height }}">
-        <div class="h-full rounded-full bg-growth transition-[width] duration-500" style="width: {{ $percent }}%"></div>
+         class="w-full overflow-hidden rounded-full bg-slate-200/80 p-0.5 shadow-inner dark:bg-slate-800 {{ $height }}">
+        <div class="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 shadow-[0_0_10px_rgb(16_185_129_/_0.25)] transition-[width] duration-500" style="width: {{ $percent }}%"></div>
     </div>
 </div>

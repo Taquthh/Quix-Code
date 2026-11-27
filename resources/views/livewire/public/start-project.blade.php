@@ -17,7 +17,7 @@
         ];
     @endphp
 
-    <div class="mb-8 space-y-3">
+    <div class="mb-8 max-w-2xl space-y-4">
         <span class="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold tracking-wide text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
             {{ $t('public.intake.badge', 'Mulai Proyek', 'Start a Project') }}
         </span>

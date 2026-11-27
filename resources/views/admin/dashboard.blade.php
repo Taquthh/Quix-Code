@@ -1,8 +1,15 @@
 <x-layouts::admin :title="__('admin.nav.command_center')">
-    <div class="flex flex-col gap-6">
-        <div>
-            <h1 class="font-heading text-2xl font-bold text-slate-900 dark:text-slate-50">{{ __('admin.nav.command_center') }}</h1>
-            <p class="text-sm text-slate-600 dark:text-slate-400">{{ __('admin.dashboard.greeting', ['name' => auth()->user()->name]) }}</p>
+    <div class="flex flex-col gap-8">
+        <div class="flex flex-col justify-between gap-4 border-b border-slate-200/80 pb-6 dark:border-slate-800 sm:flex-row sm:items-end">
+            <div class="space-y-2">
+                <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700 dark:text-emerald-300">
+                    <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                    {{ auth()->user()->isAdmin() ? __('admin.nav.group_admin') : __('admin.nav.group_work') }}
+                </span>
+                <h1 class="font-heading text-3xl font-semibold tracking-tight text-slate-950 dark:text-slate-50 sm:text-4xl">{{ __('admin.nav.command_center') }}</h1>
+                <p class="text-sm leading-6 text-slate-600 dark:text-slate-400">{{ __('admin.dashboard.greeting', ['name' => auth()->user()->name]) }}</p>
+            </div>
+            <div class="text-xs font-medium text-slate-500 dark:text-slate-400">{{ now()->translatedFormat('l, j F Y') }}</div>
         </div>
 
         <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

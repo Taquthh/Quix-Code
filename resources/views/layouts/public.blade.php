@@ -124,14 +124,14 @@
                 </a>
             </div>
 
-            <button type="button" @click="mobileMenu = !mobileMenu" class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-slate-800 text-slate-200 md:hidden" aria-label="Menu">
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <button type="button" @click="mobileMenu = !mobileMenu" :aria-expanded="mobileMenu" aria-controls="public-mobile-menu" class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-slate-200 transition hover:bg-white/[0.08] md:hidden" aria-label="{{ __('public.nav.aria') }}">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
         </div>
 
-        <div x-show="mobileMenu" x-cloak class="border-t border-slate-800 bg-slate-950 px-4 py-4 md:hidden">
+        <div id="public-mobile-menu" x-show="mobileMenu" x-cloak class="border-t border-white/10 bg-slate-950 px-4 py-4 md:hidden">
             <div class="flex flex-col gap-3 text-sm">
                 <a href="{{ route('public.services', ['locale' => $activeLocale]) }}" class="py-1.5 text-slate-200">{{ __('public.nav.services') }}</a>
                 <a href="{{ route('public.works', ['locale' => $activeLocale]) }}" class="py-1.5 text-slate-200">{{ __('public.nav.works') }}</a>

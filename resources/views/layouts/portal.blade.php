@@ -24,7 +24,7 @@
     <body class="min-h-screen bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-200" data-portal-layout>
         <a href="#portal-main" class="sr-only focus:not-sr-only focus:absolute focus:start-2 focus:top-2 focus:z-50 focus:rounded-md focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:text-slate-900">{{ __('portal.nav.skip') }}</a>
 
-        <div class="lg:grid lg:min-h-screen lg:grid-cols-[16rem_minmax(0,1fr)]">
+        <div class="lg:grid lg:min-h-screen lg:grid-cols-[17rem_minmax(0,1fr)]">
             {{-- Sidebar desktop --}}
             <aside class="sticky top-0 hidden h-screen flex-col gap-6 border-e border-slate-200/80 bg-white/90 p-5 shadow-[4px_0_28px_rgb(15_23_42_/_0.035)] backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/95 dark:shadow-none lg:flex" aria-label="{{ __('portal.nav.label') }}">
                 <a href="{{ route('portal.overview') }}" wire:navigate class="flex items-center gap-3 px-2 py-1">

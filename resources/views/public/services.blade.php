@@ -56,6 +56,8 @@
                                 <p class="mt-1 text-xs text-slate-500">
                                     @if ($tier['fetched_at'] !== null)
                                         {{ __('public.currency.updated_at', ['time' => $tier['fetched_at']->diffForHumans()]) }}
+                                    @else
+                                        {{ __('public.currency.no_rate_date') }}
                                     @endif
                                     @if ($tier['is_stale'])
                                         · {{ __('public.currency.stale_warning') }}

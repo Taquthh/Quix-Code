@@ -34,7 +34,20 @@
                 <td class="font-medium text-slate-900 dark:text-slate-50">{{ $lead->title }}</td>
                 <td>{{ $lead->client?->name }}</td>
                 <td><x-badge-status :status="$lead->status" /></td>
-                <td>{{ $lead->lead_source ? __('projects.lead_sources.'.$lead->lead_source) : '—' }}</td>
+                <td>
+                    {{ $lead->lead_source ? __('projects.lead_sources.'.$lead->lead_source) : '—' }}
+                    @if (is_array($lead->utm) && $lead->utm !== [])
+                        <details class="mt-1 max-w-56 text-xs text-slate-500 dark:text-slate-400">
+                            <summary class="cursor-pointer">{{ __('quotations.leads.utm_details') }}</summary>
+                            <dl class="mt-1 grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5">
+                                @foreach ($lead->utm as $key => $value)
+                                    <dt class="font-medium">{{ str_replace('utm_', '', $key) }}</dt>
+                                    <dd class="break-all">{{ $value }}</dd>
+                                @endforeach
+                            </dl>
+                        </details>
+                    @endif
+                </td>
                 <td>
                     @if ($lead->latestQuotation)
                         <span class="tabular-nums">v{{ $lead->latestQuotation->version }} · {{ $lead->latestQuotation->totalMoney()->format() }}</span>

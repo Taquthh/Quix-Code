@@ -166,6 +166,36 @@
                 </div>
             </div>
 
+            @if ($captchaWidgetEnabled && $captchaConfigured)
+                <div>
+                    <div wire:ignore class="cf-turnstile" data-sitekey="{{ $captchaSiteKey }}" data-action="public_lead_intake" data-callback="quixLeadCaptchaSuccess" data-expired-callback="quixLeadCaptchaReset" data-error-callback="quixLeadCaptchaReset"></div>
+                    @once
+                        <script>
+                            window.quixLeadCaptchaUpdate = function (token) {
+                                const field = Array.from(document.querySelectorAll('input[type="hidden"]'))
+                                    .find((element) => element.getAttribute('wire:model') === 'captcha_token');
+                                let root = field;
+
+                                while (root && !root.hasAttribute('wire:id')) {
+                                    root = root.parentElement;
+                                }
+
+                                const component = root && window.Livewire?.find(root.getAttribute('wire:id'));
+                                component?.set('captcha_token', token);
+                            };
+                            window.quixLeadCaptchaSuccess = (token) => window.quixLeadCaptchaUpdate(token);
+                            window.quixLeadCaptchaReset = () => window.quixLeadCaptchaUpdate('');
+                            document.addEventListener('quix-captcha-reset', () => window.turnstile?.reset());
+                        </script>
+                        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+                    @endonce
+                </div>
+            @elseif (! $captchaConfigured)
+                <p role="alert" class="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800 dark:border-rose-500/30 dark:bg-rose-950/30 dark:text-rose-200">
+                    {{ $t('public.intake.errors.captcha_unavailable', 'Formulir sementara tidak tersedia.', 'The form is temporarily unavailable.') }}
+                </p>
+            @endif
+
             <input type="hidden" wire:model="captcha_token" />
             @error('captcha_token')
                 <p class="text-xs font-medium text-rose-600 dark:text-rose-400">{{ $message }}</p>
@@ -195,7 +225,7 @@
             </div>
 
             <div class="pt-2">
-                <button type="submit" wire:loading.attr="disabled"
+                <button type="submit" wire:loading.attr="disabled" @disabled(! $captchaConfigured)
                         class="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-xs transition hover:bg-emerald-700 disabled:opacity-60 sm:w-auto">
                     <span wire:loading.remove wire:target="submit">
                         {{ $t('public.intake.submit', 'Kirim Brief Proyek', 'Submit Project Brief') }}

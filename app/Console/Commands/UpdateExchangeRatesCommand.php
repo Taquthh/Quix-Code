@@ -17,8 +17,10 @@ class UpdateExchangeRatesCommand extends Command
         $manualRate = $this->option('rate');
 
         if (is_string($manualRate) && trim($manualRate) !== '') {
-            if (! is_numeric($manualRate) || (float) $manualRate <= 0) {
-                $this->error('Nilai --rate harus angka positif.');
+            $numericRate = is_numeric($manualRate) ? (float) $manualRate : NAN;
+
+            if (! is_finite($numericRate) || $numericRate < 1 || $numericRate > 10_000_000) {
+                $this->error('Nilai --rate harus finite dan berada di antara 1 dan 10.000.000 IDR per USD.');
 
                 return self::FAILURE;
             }

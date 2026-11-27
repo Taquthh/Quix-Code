@@ -8,34 +8,57 @@ use Throwable;
 /** Verifikasi CAPTCHA / Cloudflare Turnstile pada form publik (T6-04). */
 class CaptchaVerifier
 {
-    public function isEnabled(): bool
+    private const VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+
+    public function isConfigured(): bool
     {
         $driver = (string) config('services.captcha.driver', 'none');
-        $secret = (string) config('services.captcha.secret_key', '');
 
-        return $driver !== 'none' && trim($secret) !== '';
+        if ($driver === 'none') {
+            return ! app()->environment('production');
+        }
+
+        return $driver === 'turnstile'
+            && filled(config('services.captcha.site_key'))
+            && filled(config('services.captcha.secret_key'));
+    }
+
+    public function shouldRenderWidget(): bool
+    {
+        return (string) config('services.captcha.driver', 'none') === 'turnstile'
+            && filled(config('services.captcha.site_key'));
     }
 
     public function verify(?string $token, ?string $ip = null): bool
     {
-        if (! $this->isEnabled()) {
-            return true;
+        $driver = (string) config('services.captcha.driver', 'none');
+
+        if ($driver === 'none') {
+            return ! app()->environment('production');
         }
 
-        if (! is_string($token) || trim($token) === '') {
+        if (! $this->isConfigured() || ! is_string($token) || trim($token) === '') {
             return false;
         }
 
         try {
-            $response = Http::asForm()
+            $response = Http::acceptJson()
+                ->asForm()
+                ->connectTimeout(3)
                 ->timeout(5)
-                ->post((string) config('services.captcha.verify_url'), array_filter([
+                ->withOptions(['allow_redirects' => false])
+                ->post(self::VERIFY_URL, array_filter([
                     'secret' => (string) config('services.captcha.secret_key'),
                     'response' => trim($token),
                     'remoteip' => $ip,
-                ]));
+                ], static fn (mixed $value): bool => $value !== null && $value !== ''));
 
-            return $response->successful() && (bool) $response->json('success', false);
+            $payload = $response->json();
+
+            return $response->successful()
+                && is_array($payload)
+                && ($payload['success'] ?? false) === true
+                && ($payload['action'] ?? null) === 'public_lead_intake';
         } catch (Throwable) {
             return false;
         }

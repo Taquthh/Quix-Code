@@ -11,6 +11,7 @@ use App\Http\Controllers\Portal\OverviewController;
 use App\Http\Controllers\ProjectFileController;
 use App\Http\Controllers\Public\PublicCurrencyController;
 use App\Http\Controllers\Public\PublicPageController;
+use App\Http\Controllers\Public\RobotsController;
 use App\Http\Controllers\Public\SitemapController;
 use App\Http\Controllers\QuotationPrintController;
 use App\Http\Controllers\TicketScreenshotController;
@@ -42,6 +43,7 @@ use Illuminate\Support\Facades\Route;
 
 // Etalase publik default (ID) & SEO sitemap (Tahap 6).
 Route::get('/', [PublicPageController::class, 'home'])->name('home');
+Route::get('robots.txt', RobotsController::class)->name('robots');
 Route::get('sitemap.xml', SitemapController::class)->name('sitemap');
 Route::post('public/currency/{currency}', PublicCurrencyController::class)->name('public.currency');
 

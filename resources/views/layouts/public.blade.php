@@ -6,12 +6,21 @@
     $activeLocale = in_array($locale, ['id', 'en'], true) ? $locale : 'id';
     $title = $seo['title'] ?? 'Quix Code — Integrated Software Agency & Client Portal';
     $description = $seo['description'] ?? __('public.seo.home_description');
-    $canonical = $seo['canonical'] ?? url()->current();
+    $siteBaseUrl = rtrim((string) config('app.url'), '/');
+    $canonicalCandidate = $seo['canonical'] ?? url()->current();
+    $canonicalPath = parse_url($canonicalCandidate, PHP_URL_PATH);
+    $canonical = $siteBaseUrl.(is_string($canonicalPath) && $canonicalPath !== '' ? $canonicalPath : '/');
     $alternates = $seo['alternates'] ?? [
         'id' => url('/id'),
         'en' => url('/en'),
         'x-default' => url('/id'),
     ];
+    $alternates = array_map(static function (string $href) use ($siteBaseUrl): string {
+        $path = parse_url($href, PHP_URL_PATH);
+
+        return $siteBaseUrl.(is_string($path) && $path !== '' ? $path : '/');
+    }, $alternates);
+    $ogImage = $seo['image'] ?? $siteBaseUrl.'/og-image.png';
     $ogLocale = $seo['og_locale'] ?? ($activeLocale === 'en' ? 'en_US' : 'id_ID');
     $selectedCurrency = \App\Support\PublicCurrencyEstimator::selectedCurrency();
     $analyticsProvider = (string) config('services.analytics.provider', 'none');
@@ -36,10 +45,13 @@
     <meta property="og:title" content="{{ $title }}" />
     <meta property="og:description" content="{{ $description }}" />
     <meta property="og:url" content="{{ $canonical }}" />
+    <meta property="og:image" content="{{ $ogImage }}" />
+    <meta property="og:image:alt" content="Quix Code — software engineering studio" />
     <meta property="og:locale" content="{{ $ogLocale }}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{{ $title }}" />
     <meta name="twitter:description" content="{{ $description }}" />
+    <meta name="twitter:image" content="{{ $ogImage }}" />
 
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -62,11 +74,11 @@
             '@context' => 'https://schema.org',
             '@type' => 'ProfessionalService',
             'name' => 'Quix Code',
-            'url' => url('/'.$activeLocale),
+            'url' => $siteBaseUrl.'/'.$activeLocale,
             'description' => $description,
             'availableLanguage' => ['Indonesian', 'English'],
             'areaServed' => 'Global',
-        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_INVALID_UTF8_SUBSTITUTE) !!}
     </script>
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-emerald-600 selection:text-white" x-data="{ mobileMenu: false }">

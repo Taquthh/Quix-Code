@@ -10,6 +10,9 @@ return [
         'setup_hint' => 'We have prepared a Client Portal account where you can review quotations, track progress, and manage invoices. Set your password using the secure link below:',
         'action' => 'Set Portal Password',
         'outro' => 'This link is personal and expires automatically to keep your account secure.',
+        'existing_hint' => 'Your new project brief has been added to your existing account.',
+        'portal_action' => 'Open Client Portal',
+        'existing_outro' => 'Our team will review the brief and follow up with you by email.'
     ],
 
     'quotation_sent' => [

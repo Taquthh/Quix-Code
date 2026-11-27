@@ -8,15 +8,24 @@ use App\Http\Middleware\SetLocale;
 use App\Models\CaseStudy;
 use App\Support\Money;
 use App\Support\PublicCurrencyEstimator;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 /** Pengendali halaman etalase publik bilingual (/id dan /en) beserta metadata SEO (T6-01, T6-03, T6-05, T6-08). */
 class PublicPageController extends Controller
 {
-    public function home(Request $request, ?string $locale = null): View
+    public function home(Request $request, ?string $locale = null): View|RedirectResponse
     {
         $activeLocale = $this->resolveLocale($locale);
+
+        if ($locale === null) {
+            $query = $request->getQueryString();
+            $target = '/'.$activeLocale.($query !== null && $query !== '' ? '?'.$query : '');
+
+            return redirect()->to($target);
+        }
+
         $featuredWorks = CaseStudy::query()
             ->published()
             ->latest('published_at')

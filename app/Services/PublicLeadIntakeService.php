@@ -12,6 +12,8 @@ use App\Models\UserConsent;
 use App\Notifications\LeadWelcomeNotification;
 use App\Support\ActivityLogger;
 use App\Support\Money;
+use Illuminate\Contracts\Cache\LockTimeoutException;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -49,84 +51,124 @@ class PublicLeadIntakeService
     {
         $email = Str::lower(trim($input['email']));
         $normalizedPhone = $this->normalizeWhatsapp($input['whatsapp']);
+        $lockKeys = ['email:'.$email];
 
-        $this->guardDuplicateLead($email, $normalizedPhone);
+        if ($normalizedPhone !== null) {
+            $lockKeys[] = 'whatsapp:'.$normalizedPhone;
+        }
 
-        /** @var array{project: Project, user: User, is_new_user: bool} $created */
-        $created = DB::transaction(function () use ($input, $email, $normalizedPhone): array {
-            $user = User::query()->where('email', $email)->first();
-            $isNewUser = false;
+        sort($lockKeys, SORT_STRING);
 
-            if ($user === null) {
-                $user = new User([
-                    'name' => trim($input['name']),
-                    'email' => $email,
-                    'whatsapp' => $normalizedPhone,
-                    'locale' => $input['locale'],
-                    'password' => Str::random(48),
+        try {
+            /** @var array{project: Project, user: User, is_new_user: bool} $created */
+            $created = $this->withIntakeLocks($lockKeys, function () use ($input, $email, $normalizedPhone): array {
+                $this->guardDuplicateLead($email, $normalizedPhone);
+
+                return DB::transaction(function () use ($input, $email, $normalizedPhone): array {
+                    $user = User::withTrashed()->where('email', $email)->lockForUpdate()->first();
+                    $isNewUser = false;
+
+                    if ($user !== null && ($user->trashed() || $user->role !== UserRole::Client || ! $user->is_active)) {
+                        throw ValidationException::withMessages([
+                            'email' => __('public.intake.errors.account_unavailable'),
+                        ]);
+                    }
+
+                    if ($user === null) {
+                        $user = new User([
+                            'name' => trim($input['name']),
+                            'email' => $email,
+                            'whatsapp' => $normalizedPhone,
+                            'locale' => $input['locale'],
+                            'password' => Str::random(48),
+                        ]);
+                        $user->role = UserRole::Client;
+                        $user->preferred_currency = $input['currency'];
+                        $user->is_active = true;
+                        $user->save();
+                        $isNewUser = true;
+                    } elseif (blank($user->whatsapp) && $normalizedPhone !== null) {
+                        $user->forceFill(['whatsapp' => $normalizedPhone])->save();
+                    }
+
+                    $budgetMinor = filled($input['budget_reference'])
+                        ? Money::fromMajor((string) $input['budget_reference'], $input['currency'])->amount
+                        : null;
+
+                    $description = trim($input['description']);
+                    if ($input['service_type'] !== '') {
+                        $description = '['.__('public.services.items.'.$input['service_type'].'.title')."]\n\n".$description;
+                    }
+
+                    $project = new Project([
+                        'client_id' => $user->id,
+                        'title' => trim($input['title']),
+                        'description' => $description,
+                        'lead_source' => 'website',
+                        'currency' => $input['currency'],
+                        'budget_reference' => $budgetMinor,
+                    ]);
+                    $project->utm = $input['utm'];
+                    $project->save();
+
+            foreach ([
+                'privacy_policy' => (string) config('quix.legal.privacy_version', '2026.1'),
+                'terms_of_service' => (string) config('quix.legal.terms_version', '2026.1'),
+            ] as $type => $version) {
+                UserConsent::query()->create([
+                    'user_id' => $user->id,
+                    'type' => $type,
+                    'version' => $version,
+                    'ip' => $input['ip'],
+                    'granted_at' => now(),
                 ]);
-                $user->role = UserRole::Client;
-                $user->preferred_currency = $input['currency'];
-                $user->is_active = true;
-                $user->save();
-                $isNewUser = true;
-            } elseif (blank($user->whatsapp) && $normalizedPhone !== null) {
-                $user->forceFill(['whatsapp' => $normalizedPhone])->save();
             }
 
-            $budgetMinor = filled($input['budget_reference'])
-                ? Money::fromMajor((string) $input['budget_reference'], $input['currency'])->amount
-                : null;
+                    ActivityLogger::log(ActivityAction::ProjectCreated, $project, [
+                        'title' => $project->title,
+                        'source' => 'public_intake',
+                    ], $user);
 
-            $description = trim($input['description']);
-            if ($input['service_type'] !== '') {
-                $description = '['.__('public.services.items.'.$input['service_type'].'.title')."]\n\n".$description;
-            }
-
-            $project = new Project([
-                'client_id' => $user->id,
-                'title' => trim($input['title']),
-                'description' => $description,
-                'lead_source' => 'website',
-                'currency' => $input['currency'],
-                'budget_reference' => $budgetMinor,
+                    return [
+                        'project' => $project,
+                        'user' => $user,
+                        'is_new_user' => $isNewUser,
+                    ];
+                });
+            });
+        } catch (LockTimeoutException) {
+            throw ValidationException::withMessages([
+                'email' => __('public.intake.errors.rate_limited'),
             ]);
-            $project->utm = $input['utm'];
-            $project->save();
+        }
 
-            UserConsent::query()->create([
-                'user_id' => $user->id,
-                'type' => 'privacy_policy',
-                'version' => (string) config('quix.legal.privacy_version', '2026.1'),
-                'ip' => $input['ip'],
-                'granted_at' => now(),
-            ]);
-
-            ActivityLogger::log(ActivityAction::ProjectCreated, $project, [
-                'title' => $project->title,
-                'source' => 'public_intake',
-            ], $user);
-
-            return [
-                'project' => $project,
-                'user' => $user,
-                'is_new_user' => $isNewUser,
-            ];
-        });
+        $setupUrl = null;
 
         if ($created['is_new_user']) {
             $token = Password::broker()->createToken($created['user']);
-            $setupUrl = route('password.reset', [
+            $setupPath = route('password.reset', [
                 'token' => $token,
                 'email' => $created['user']->email,
-            ]);
-
-            $created['user']->notify(
-                (new LeadWelcomeNotification($created['project'], $setupUrl))->locale($input['locale'])
-            );
+            ], false);
+            $setupUrl = rtrim((string) config('app.url'), '/').'/'.ltrim($setupPath, '/');
         }
 
+        $created['user']->notify(
+            (new LeadWelcomeNotification($created['project'], $setupUrl))->locale($input['locale'])
+        );
+
         return $created['project'];
+    }
+
+    /** @param list<string> $keys */
+    private function withIntakeLocks(array $keys, callable $callback, int $index = 0): mixed
+    {
+        if (! isset($keys[$index])) {
+            return $callback();
+        }
+
+        return Cache::lock('public-lead-intake:'.hash('sha256', $keys[$index]), 60)
+            ->block(5, fn () => $this->withIntakeLocks($keys, $callback, $index + 1));
     }
 
     private function guardDuplicateLead(string $email, ?string $normalizedPhone): void
@@ -137,7 +179,10 @@ class PublicLeadIntakeService
                 $query->where('email', $email);
 
                 if ($normalizedPhone !== null) {
-                    $query->orWhere('whatsapp', $normalizedPhone);
+                    $query->orWhereRaw(
+                        "REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(whatsapp, '+', ''), ' ', ''), '-', ''), '(', ''), ')', ''), '.', '') = ?",
+                        [$normalizedPhone],
+                    );
                 }
             })
             ->pluck('id');

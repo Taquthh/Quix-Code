@@ -84,13 +84,27 @@ class StartProject extends Component
                     }
                 },
             ],
-            'whatsapp' => ['required', 'string', 'min:8', 'max:25'],
+            'whatsapp' => [
+                'required',
+                'string',
+                'min:8',
+                'max:25',
+                function (string $attribute, mixed $value, Closure $fail): void {
+                    $digits = is_string($value) ? (preg_replace('/\\D+/', '', $value) ?? '') : '';
+                    $normalizedDigits = str_starts_with($digits, '0') ? '62'.substr($digits, 1) : $digits;
+
+                    if (strlen($normalizedDigits) < 8 || strlen($normalizedDigits) > 15) {
+                        $fail(__('public.intake.errors.whatsapp_invalid'));
+                    }
+                },
+            ],
             'service_type' => ['required', Rule::in(['web', 'automation', 'portal'])],
-            'title' => ['required', 'string', 'min:4', 'max:180'],
+            'title' => ['required', 'string', 'min:4', 'max:180', 'not_regex:/[\\r\\n]/'],
             'description' => ['required', 'string', 'min:15', 'max:5000'],
             'currency' => ['required', Rule::enum(Currency::class)],
             'budget_reference' => ['nullable', 'regex:/^\d{1,13}(\.\d{1,2})?$/'],
             'consent_privacy' => ['accepted'],
+            'captcha_token' => ['nullable', 'string', 'max:2048'],
         ];
     }
 
@@ -120,6 +134,8 @@ class StartProject extends Component
         $this->validate();
 
         if (! $captcha->verify($this->captcha_token, request()->ip())) {
+            $this->captcha_token = '';
+            $this->dispatch('quix-captcha-reset');
             $this->addError('captcha_token', __('public.intake.errors.captcha_failed'));
 
             return;
@@ -150,8 +166,13 @@ class StartProject extends Component
         /** @var view-string $view */
         $view = 'livewire.public.start-project';
 
+        $captcha = app(CaptchaVerifier::class);
+
         return view($view, [
             'currencies' => Currency::cases(),
+            'captchaConfigured' => $captcha->isConfigured(),
+            'captchaWidgetEnabled' => $captcha->shouldRenderWidget(),
+            'captchaSiteKey' => config('services.captcha.site_key'),
         ])->layout('layouts::public', [
             'locale' => $this->locale,
             'seo' => [

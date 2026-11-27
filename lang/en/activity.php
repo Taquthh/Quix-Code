@@ -37,5 +37,8 @@ return [
         'quotation_superseded' => 'Quotation superseded by a new version',
         'quotation_expired' => 'Quotation expired',
         'quotation_reminded' => 'Quotation expiry reminder',
+        'invoice_reminded' => 'Invoice reminder sent',
+        'ticket_sla_breached' => 'Ticket passed its reply deadline',
+        'notification_template_updated' => 'Notification template updated',
     ],
 ];

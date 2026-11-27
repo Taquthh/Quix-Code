@@ -37,5 +37,8 @@ return [
         'quotation_superseded' => 'Quotation digantikan versi baru',
         'quotation_expired' => 'Quotation kedaluwarsa',
         'quotation_reminded' => 'Pengingat masa berlaku quotation',
+        'invoice_reminded' => 'Pengingat invoice terkirim',
+        'ticket_sla_breached' => 'Tiket melewati batas waktu balasan',
+        'notification_template_updated' => 'Template notifikasi diperbarui',
     ],
 ];

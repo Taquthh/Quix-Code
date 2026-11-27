@@ -28,9 +28,11 @@ class RevisionTicket extends Model
             'revision_round' => 'integer',
             'is_billable' => 'boolean',
             'resolved_at' => 'datetime',
+            'sla_breached_at' => 'datetime',
         ];
     }
 
+    /** @return BelongsTo<Project, $this> */
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);

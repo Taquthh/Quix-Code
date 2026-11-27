@@ -12,7 +12,7 @@ class WebhookDelivery extends Model
 
     protected $fillable = [
         'project_id', 'delivery_id', 'event', 'status', 'payload',
-        'received_at', 'processed_at', 'error', 'signature_valid', 'attempts', 'purge_after',
+        'received_at', 'processed_at', 'error', 'signature_valid', 'attempts', 'purge_after', 'payload_purged_at',
     ];
 
     protected function casts(): array
@@ -24,6 +24,7 @@ class WebhookDelivery extends Model
             'signature_valid' => 'boolean',
             'attempts' => 'integer',
             'purge_after' => 'datetime',
+            'payload_purged_at' => 'datetime',
         ];
     }
 

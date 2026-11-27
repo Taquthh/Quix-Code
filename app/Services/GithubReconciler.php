@@ -166,4 +166,32 @@ class GithubReconciler
 
         return $commits;
     }
+
+    /**
+     * Peringatkan admin jika proyek aktif dengan repo terhubung tidak menerima webhook delivery valid
+     * selama minimal config('quix.alerts.stale_webhook_hours') jam (Runbook Bagian 11 / T5-08).
+     */
+    public function alertStaleProjects(?string $projectId = null): int
+    {
+        $hours = max(1, (int) config('quix.alerts.stale_webhook_hours', 24));
+        $cutoff = now()->subHours($hours);
+        $alerts = app(OpsAlerts::class);
+
+        $projects = Project::query()
+            ->where('status', ProjectStatus::Active->value)
+            ->whereNotNull('github_repo')
+            ->whereNotNull('webhook_secret')
+            ->where('created_at', '<=', $cutoff)
+            ->when($projectId, fn ($query) => $query->whereKey($projectId))
+            ->whereDoesntHave('webhookDeliveries', fn ($q) => $q
+                ->where('signature_valid', true)
+                ->where('received_at', '>', $cutoff))
+            ->get(['id', 'title', 'github_repo']);
+
+        foreach ($projects as $project) {
+            $alerts->staleWebhook($project->id, $project->title, (string) $project->github_repo, $hours);
+        }
+
+        return $projects->count();
+    }
 }

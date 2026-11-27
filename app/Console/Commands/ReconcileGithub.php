@@ -19,7 +19,9 @@ class ReconcileGithub extends Command
             return self::FAILURE;
         }
 
-        $result = $reconciler->run($this->option('project') ?: null);
+        $projectId = $this->option('project') ?: null;
+        $result = $reconciler->run($projectId);
+        $reconciler->alertStaleProjects($projectId);
 
         $this->info("{$result['missing']} commit terlewat diantrekan dari {$result['projects']} proyek.");
 

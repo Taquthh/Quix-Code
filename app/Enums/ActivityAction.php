@@ -40,6 +40,9 @@ enum ActivityAction: string
     case ProgressFullConfirmed = 'progress_full_confirmed';
     case WebhookSecretRotated = 'webhook_secret_rotated';
     case WebhookReplayed = 'webhook_replayed';
+    case InvoiceReminded = 'invoice_reminded';
+    case TicketSlaBreached = 'ticket_sla_breached';
+    case NotificationTemplateUpdated = 'notification_template_updated';
 
     public function label(): string
     {

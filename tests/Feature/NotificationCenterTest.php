@@ -441,7 +441,7 @@ it('semua teks notifikasi tersedia dalam dua bahasa dengan kunci yang sama', fun
 });
 
 it('setiap jenis notifikasi lonceng yang dikirim sistem punya teks judul dan isi', function () {
-    $keys = ['quotation_sent', 'quotation_expiring', 'dp_invoice', 'invoice_issued', 'payment_verified', 'payment_rejected', 'ticket_replied'];
+    $keys = ['quotation_sent', 'quotation_expiring', 'dp_invoice', 'invoice_issued', 'payment_verified', 'payment_rejected', 'ticket_replied', 'invoice_due_soon', 'invoice_due_today', 'invoice_overdue'];
     $id = require lang_path('id/notifications.php');
     $en = require lang_path('en/notifications.php');
 

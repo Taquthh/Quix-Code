@@ -11,9 +11,8 @@ use Illuminate\Support\Str;
 use Throwable;
 
 /**
- * Peringatan operasional ke admin aktif (T5-09). Dibatasi satu email per jenis dan antrean dalam rentang
- * config('quix.alerts.throttle_minutes') agar badai kegagalan tidak membanjiri kotak masuk, dan kegagalan
- * mengirim peringatan tidak pernah mengganggu worker.
+ * Peringatan operasional ke admin aktif (T5-09, T6-09). Dibatasi satu email per jenis dalam rentang
+ * config('quix.alerts.throttle_minutes') agar badai kegagalan tidak membanjiri kotak masuk.
  */
 class OpsAlerts
 {
@@ -31,6 +30,29 @@ class OpsAlerts
         Log::warning('Antrean menumpuk: '.$queue, ['connection' => $connection, 'size' => $size]);
 
         $this->send("queue_busy:{$queue}", 'queue_busy', ['connection' => $connection, 'queue' => $queue, 'size' => $size]);
+    }
+
+    public function staleWebhook(string $projectId, string $projectTitle, string $repo, int $hours): void
+    {
+        Log::warning('Tidak ada webhook delivery dalam '.$hours.' jam untuk proyek aktif.', [
+            'project' => $projectId,
+            'repo' => $repo,
+        ]);
+
+        $this->send("stale_webhook:{$projectId}", 'stale_webhook', [
+            'project' => $projectTitle,
+            'repo' => $repo,
+            'hours' => $hours,
+        ]);
+    }
+
+    public function staleExchangeRate(int $hoursOld): void
+    {
+        Log::warning('Kurs mata uang publik usang atau belum tersedia.', ['hours' => $hoursOld]);
+
+        $this->send('stale_exchange_rate', 'stale_exchange_rate', [
+            'hours' => $hoursOld,
+        ]);
     }
 
     /** @param array<string, mixed> $context */

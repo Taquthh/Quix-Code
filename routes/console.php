@@ -28,3 +28,12 @@ Schedule::command('queue:monitor', [
     collect((array) config('quix.queues'))->map(fn (string $queue) => config('queue.default').':'.$queue)->implode(','),
     '--max='.(int) config('quix.alerts.queue_max'),
 ])->everyFiveMinutes()->withoutOverlapping();
+
+/*
+ * Aturan otomatis (T5-11). Zona waktu aplikasi UTC: 01:30 UTC = 08:30 WIB.
+ * Pengingat invoice lebih dulu, lalu penjedaan DP, sehingga klien menerima peringatan sebelum proyeknya dijeda.
+ */
+Schedule::command('invoices:remind')->dailyAt('01:30')->withoutOverlapping();
+Schedule::command('projects:hold-unpaid-dp')->dailyAt('02:30')->withoutOverlapping();
+Schedule::command('tickets:check-sla')->hourly()->withoutOverlapping();
+Schedule::command('webhooks:purge')->dailyAt('03:15')->withoutOverlapping();

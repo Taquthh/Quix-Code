@@ -226,6 +226,10 @@ return [
         'not_workable' => 'The project is not in a working stage, so staff cannot move milestones.',
     ],
 
+    'auto_hold' => [
+        'dp_unpaid' => 'Paused automatically: the down payment invoice has been unpaid for more than :days days since it was issued.',
+    ],
+
     'webhook' => [
         'pending_title' => 'Waiting for 100% confirmation',
         'pending_body' => 'A GitHub push requested 100% progress. Automatic progress is held at 99% and the status will not change until you confirm the work is really finished.',

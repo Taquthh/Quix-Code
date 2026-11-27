@@ -3,10 +3,21 @@
 namespace App\Models;
 
 use App\Enums\Currency;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-/** Hanya untuk estimasi tampilan di situs publik; angka mengikat selalu memakai mata uang proyek. */
+/**
+ * Hanya untuk estimasi tampilan di situs publik; angka mengikat selalu memakai mata uang proyek.
+ *
+ * @property int $id
+ * @property Currency $base_currency
+ * @property Currency $target_currency
+ * @property numeric-string $rate
+ * @property CarbonInterface|null $fetched_at
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ */
 class ExchangeRate extends Model
 {
     use HasFactory;

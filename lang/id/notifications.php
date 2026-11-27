@@ -28,6 +28,18 @@ return [
             'title' => 'Invoice :number terbit',
             'body' => 'Proyek :project: :amount.',
         ],
+        'invoice_due_soon' => [
+            'title' => 'Invoice :number segera jatuh tempo',
+            'body' => 'Proyek :project: :amount belum dibayar.',
+        ],
+        'invoice_due_today' => [
+            'title' => 'Invoice :number jatuh tempo hari ini',
+            'body' => 'Proyek :project: :amount belum dibayar.',
+        ],
+        'invoice_overdue' => [
+            'title' => 'Invoice :number terlambat',
+            'body' => 'Proyek :project: :amount belum dibayar dan sudah lewat jatuh tempo.',
+        ],
         'payment_verified' => [
             'title' => 'Pembayaran invoice :number diterima',
             'body' => 'Proyek :project: :amount sudah diverifikasi.',

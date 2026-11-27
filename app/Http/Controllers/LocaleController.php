@@ -17,6 +17,18 @@ class LocaleController extends Controller
             $user->forceFill(['locale' => $locale])->saveQuietly();
         }
 
-        return back()->withCookie(Cookie::forever('locale', $locale));
+        $cookie = Cookie::forever('locale', $locale);
+        $previous = url()->previous();
+        $path = (string) parse_url($previous, PHP_URL_PATH);
+
+        if (preg_match('#^/(id|en)(/.*)?$#', $path, $matches) === 1) {
+            $suffix = $matches[2] ?? '';
+            $query = parse_url($previous, PHP_URL_QUERY);
+            $target = '/'.$locale.$suffix.(filled($query) ? '?'.$query : '');
+
+            return redirect()->to($target)->withCookie($cookie);
+        }
+
+        return back()->withCookie($cookie);
     }
 }

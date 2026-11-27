@@ -4,6 +4,14 @@ return [
     'greeting' => 'Halo :name,',
     'salutation' => 'Salam, Tim Quix Code',
 
+    'lead_welcome' => [
+        'subject' => 'Permintaan proyek ":project" telah kami terima',
+        'intro' => 'Terima kasih telah mengajukan brief proyek ":project" ke Quix Code. Tim kami segera meninjau kebutuhan Anda.',
+        'setup_hint' => 'Kami telah menyiapkan akun Client Portal untuk memantau penawaran, progres, dan tagihan Anda. Atur kata sandi akun Anda melalui tautan aman berikut:',
+        'action' => 'Atur Kata Sandi Portal',
+        'outro' => 'Tautan ini bersifat pribadi dan memiliki batas waktu berlaku demi keamanan akun Anda.',
+    ],
+
     'quotation_sent' => [
         'subject' => 'Penawaran baru v:version untuk :project',
         'intro' => 'Kami telah mengirim penawaran versi :version untuk proyek ":project".',
@@ -52,6 +60,29 @@ return [
         'outro' => 'Setelah membayar, unggah bukti pembayaran di halaman tagihan.',
     ],
 
+    'invoice_reminder' => [
+        'subject_due_soon' => 'Invoice :number untuk :project segera jatuh tempo',
+        'subject_due_today' => 'Invoice :number untuk :project jatuh tempo hari ini',
+        'subject_overdue' => 'Invoice :number untuk :project sudah lewat jatuh tempo',
+        'intro_due_soon' => 'Invoice untuk proyek ":project" akan jatuh tempo dalam :days hari.',
+        'intro_due_today' => 'Invoice untuk proyek ":project" jatuh tempo hari ini.',
+        'intro_overdue' => 'Invoice untuk proyek ":project" sudah lewat jatuh tempo.',
+        'number' => 'Nomor invoice: :number',
+        'amount' => 'Sisa tagihan: :amount',
+        'due' => 'Jatuh tempo: :date',
+        'action' => 'Lihat tagihan',
+        'outro' => 'Jika sudah membayar, unggah bukti pembayaran di halaman tagihan. Abaikan email ini jika bukti sudah Anda kirim.',
+    ],
+
+    'ticket_sla' => [
+        'subject' => '[Quix Code] :count tiket belum dibalas lebih dari :hours jam',
+        'intro' => ':count tiket belum mendapat balasan tim lebih dari :hours jam:',
+        'item' => '- :title (:project)',
+        'more' => 'Dan :count tiket lainnya.',
+        'action' => 'Buka papan tiket',
+        'outro' => 'Tiket yang sama hanya dilaporkan satu kali.',
+    ],
+
     'payment_verified' => [
         'subject' => 'Pembayaran invoice :number diterima',
         'intro' => 'Bukti pembayaran Anda untuk invoice :number (proyek ":project") sudah kami verifikasi.',
@@ -81,6 +112,10 @@ return [
     'ops_alert' => [
         'subject_failed_job' => '[Quix Code] Job gagal permanen',
         'subject_queue_busy' => '[Quix Code] Antrean menumpuk',
+        'subject_stale_webhook' => '[Quix Code] Tidak ada aktivitas webhook GitHub 24 jam',
+        'subject_stale_exchange_rate' => '[Quix Code] Kurs mata uang publik usang > 48 jam',
+        'stale_webhook_intro' => 'Proyek aktif ":project" (:repo) tidak menerima pengiriman webhook GitHub yang valid selama lebih dari :hours jam.',
+        'stale_exchange_rate_intro' => 'Kurs estimasi publik IDR/USD belum diperbarui selama lebih dari :hours jam atau belum tersedia di basis data.',
         'failed_job_intro' => 'Job :job di antrean ":queue" gagal permanen dan masuk tabel failed_jobs.',
         'error' => 'Galat: :error',
         'queue_busy_intro' => 'Antrean ":queue" (koneksi :connection) menumpuk: :size job menunggu.',

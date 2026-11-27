@@ -56,7 +56,8 @@ it('webhook yang valid masuk antrean critical, bukan default', function () {
     ], $body)->assertStatus(202);
 
     Queue::assertPushedOn('critical', ProcessGithubPush::class);
-    Queue::assertNotPushedOn('default', ProcessGithubPush::class);
+    // QueueFake tidak punya assertNotPushedOn: pastikan tak ada job yang masuk antrean default.
+    Queue::assertNotPushed(ProcessGithubPush::class, fn ($job, $queue) => $queue === 'default');
 });
 
 // ---------------------------------------------------------------- dead-letter dan peringatan

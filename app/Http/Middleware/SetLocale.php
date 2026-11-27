@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Date;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Prioritas bahasa: preferensi akun (users.locale) > cookie "locale" > default aplikasi (id).
- * Prefiks URL publik /id dan /en ditambahkan di Tahap 6.
+ * Prioritas bahasa: segmen URL publik (/id atau /en) > preferensi akun (users.locale) > cookie "locale" > default (id).
  */
 class SetLocale
 {
@@ -18,8 +17,15 @@ class SetLocale
 
     public function handle(Request $request, Closure $next): Response
     {
-        // Middleware can run with an authenticated model loaded using a partial column selection.
-        $locale = $request->user()?->getRawOriginal('locale');
+        $routeLocale = $request->route('locale');
+        $locale = is_string($routeLocale) && in_array($routeLocale, self::SUPPORTED, true)
+            ? $routeLocale
+            : null;
+
+        if ($locale === null) {
+            // Middleware dapat berjalan dengan model User yang dimuat sebagian kolomnya.
+            $locale = $request->user()?->getRawOriginal('locale');
+        }
 
         if (! in_array($locale, self::SUPPORTED, true)) {
             $locale = $request->cookie('locale');

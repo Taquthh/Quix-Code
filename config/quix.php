@@ -43,6 +43,12 @@ return [
     */
     'queues' => ['critical', 'default', 'notifications', 'pdf'],
 
+    /* Circuit breaker gateway WhatsApp (T5-10): N gagal beruntun membuka sirkuit selama M menit (email jadi kanal). */
+    'whatsapp' => [
+        'breaker_threshold' => (int) env('QUIX_WHATSAPP_BREAKER_THRESHOLD', 3),
+        'breaker_minutes' => (int) env('QUIX_WHATSAPP_BREAKER_MINUTES', 10),
+    ],
+
     /* Rekonsiliasi harian lewat GitHub API (T5-08). */
     'reconcile' => [
         'lookback_days' => (int) env('QUIX_RECONCILE_LOOKBACK_DAYS', 3),
@@ -50,9 +56,36 @@ return [
         'max_pages' => 5,
     ],
 
-    /* Peringatan operasional ke admin (T5-09): satu email per jenis dan antrean dalam rentang ini. */
+    /*
+    | Aturan otomatis scheduler (T5-11). Semua aksi dicatat sebagai aksi sistem di activity_logs.
+    | - invoice_reminder_days: pengingat invoice H-N (jatuh tempo dalam N hari), H0, dan H+N (terlambat N hari).
+    | - dp_hold_after_days: proyek menunggu DP dijeda otomatis bila invoice DP belum dibayar selama N hari sejak terbit.
+    | - ticket_sla_hours: tiket tanpa balasan tim (admin atau staf) lebih lama dari N jam dilaporkan ke admin.
+    */
+    'automation' => [
+        'invoice_reminder_days' => (int) env('QUIX_INVOICE_REMINDER_DAYS', 3),
+        'dp_hold_after_days' => (int) env('QUIX_DP_HOLD_AFTER_DAYS', 14),
+        'ticket_sla_hours' => (int) env('QUIX_TICKET_SLA_HOURS', 48),
+    ],
+
+    /* Peringatan operasional ke admin (T5-09, T5-08): satu email per jenis dan antrean dalam rentang ini. */
     'alerts' => [
         'throttle_minutes' => (int) env('QUIX_ALERT_THROTTLE_MINUTES', 10),
         'queue_max' => (int) env('QUIX_QUEUE_MAX_PENDING', 200),
+        'stale_webhook_hours' => (int) env('QUIX_STALE_WEBHOOK_HOURS', 24),
+    ],
+
+    /* Kurs mata uang publik (T6-03, T6-09): hanya estimasi; lebih dari 48 jam memicu peringatan admin. */
+    'exchange_rate' => [
+        'stale_hours' => (int) env('QUIX_EXCHANGE_RATE_STALE_HOURS', 48),
+        'default_idr_per_usd' => (float) env('QUIX_DEFAULT_IDR_PER_USD', 16200),
+    ],
+
+    /* Kepatuhan UU PDP & dokumen legal publik (T6-08). */
+    'legal' => [
+        'terms_version' => env('QUIX_TERMS_VERSION', '2026.1'),
+        'privacy_version' => env('QUIX_PRIVACY_VERSION', '2026.1'),
+        'retention_years' => (int) env('QUIX_DATA_RETENTION_YEARS', 5),
+        'dpo_email' => env('QUIX_DPO_EMAIL', 'privacy@quixcode.my.id'),
     ],
 ];

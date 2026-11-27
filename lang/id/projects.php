@@ -226,6 +226,10 @@ return [
         'not_workable' => 'Proyek belum/tidak lagi dalam tahap pengerjaan, jadi milestone tidak bisa digeser staf.',
     ],
 
+    'auto_hold' => [
+        'dp_unpaid' => 'Dijeda otomatis: invoice DP belum dibayar lebih dari :days hari sejak terbit.',
+    ],
+
     'webhook' => [
         'pending_title' => 'Menunggu konfirmasi 100%',
         'pending_body' => 'Push GitHub meminta progres 100%. Progres otomatis ditahan di 99% dan status tidak berubah sampai Anda mengonfirmasi bahwa pekerjaan benar-benar selesai.',

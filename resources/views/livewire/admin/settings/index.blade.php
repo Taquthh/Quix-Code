@@ -4,7 +4,10 @@
             <h1 class="font-heading text-2xl font-bold text-slate-900 dark:text-slate-50">{{ __('admin.settings.title') }}</h1>
             <p class="text-sm text-slate-600 dark:text-slate-400">{{ __('admin.settings.subtitle') }}</p>
         </div>
-        <flux:button :href="route('admin.team.index')" wire:navigate>{{ __('admin.settings.back_to_team') }}</flux:button>
+        <div class="flex flex-wrap gap-2">
+            <flux:button :href="route('admin.settings.templates')" wire:navigate>{{ __('admin.templates.title') }}</flux:button>
+            <flux:button :href="route('admin.team.index')" wire:navigate>{{ __('admin.settings.back_to_team') }}</flux:button>
+        </div>
     </div>
 
     <form wire:submit="save" class="flex flex-col gap-6">

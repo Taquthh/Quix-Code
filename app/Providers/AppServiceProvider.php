@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Contracts\WhatsappGateway;
 use App\Events\DownPaymentInvoiceIssued;
 use App\Events\InvoiceIssued;
 use App\Events\PaymentRejected;
@@ -28,6 +29,8 @@ use App\Policies\QuotationPolicy;
 use App\Policies\TicketPolicy;
 use App\Services\Notifier;
 use App\Services\OpsAlerts;
+use App\Services\Whatsapp\HttpWhatsappGateway;
+use App\Services\Whatsapp\LogWhatsappGateway;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Database\Eloquent\Model;
@@ -47,7 +50,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(WhatsappGateway::class, fn () => match (config('services.whatsapp.driver')) {
+            'http' => new HttpWhatsappGateway,
+            default => new LogWhatsappGateway,
+        });
     }
 
     /**

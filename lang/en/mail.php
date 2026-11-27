@@ -4,6 +4,14 @@ return [
     'greeting' => 'Hello :name,',
     'salutation' => 'Regards, The Quix Code Team',
 
+    'lead_welcome' => [
+        'subject' => 'We have received your project request ":project"',
+        'intro' => 'Thank you for submitting the brief for ":project" to Quix Code. Our team will review your requirements shortly.',
+        'setup_hint' => 'We have prepared a Client Portal account where you can review quotations, track progress, and manage invoices. Set your password using the secure link below:',
+        'action' => 'Set Portal Password',
+        'outro' => 'This link is personal and expires automatically to keep your account secure.',
+    ],
+
     'quotation_sent' => [
         'subject' => 'New quotation v:version for :project',
         'intro' => 'We have sent quotation version :version for the project ":project".',
@@ -52,6 +60,29 @@ return [
         'outro' => 'After paying, upload your proof of payment on the invoices page.',
     ],
 
+    'invoice_reminder' => [
+        'subject_due_soon' => 'Invoice :number for :project is due soon',
+        'subject_due_today' => 'Invoice :number for :project is due today',
+        'subject_overdue' => 'Invoice :number for :project is past due',
+        'intro_due_soon' => 'The invoice for project ":project" is due in :days days.',
+        'intro_due_today' => 'The invoice for project ":project" is due today.',
+        'intro_overdue' => 'The invoice for project ":project" is past its due date.',
+        'number' => 'Invoice number: :number',
+        'amount' => 'Balance due: :amount',
+        'due' => 'Due date: :date',
+        'action' => 'View invoice',
+        'outro' => 'If you have already paid, upload the proof of payment on the invoice page. Ignore this email if you already sent it.',
+    ],
+
+    'ticket_sla' => [
+        'subject' => '[Quix Code] :count tickets unanswered for more than :hours hours',
+        'intro' => ':count tickets have had no team reply for more than :hours hours:',
+        'item' => '- :title (:project)',
+        'more' => 'And :count more tickets.',
+        'action' => 'Open the ticket board',
+        'outro' => 'Each ticket is reported only once.',
+    ],
+
     'payment_verified' => [
         'subject' => 'Payment for invoice :number received',
         'intro' => 'We have verified your proof of payment for invoice :number (project ":project").',
@@ -81,6 +112,10 @@ return [
     'ops_alert' => [
         'subject_failed_job' => '[Quix Code] Job failed permanently',
         'subject_queue_busy' => '[Quix Code] Queue is backing up',
+        'subject_stale_webhook' => '[Quix Code] No GitHub webhook activity for 24 hours',
+        'subject_stale_exchange_rate' => '[Quix Code] Public exchange rate is older than 48 hours',
+        'stale_webhook_intro' => 'Active project ":project" (:repo) has not received any valid GitHub webhook deliveries for more than :hours hours.',
+        'stale_exchange_rate_intro' => 'The public IDR/USD estimation rate has not been updated for more than :hours hours or is missing.',
         'failed_job_intro' => 'Job :job on queue ":queue" failed permanently and was stored in failed_jobs.',
         'error' => 'Error: :error',
         'queue_busy_intro' => 'Queue ":queue" (connection :connection) is backing up: :size jobs waiting.',

@@ -73,24 +73,6 @@ parameters:
 			path: app/Livewire/Admin/Activity/Index.php
 
 		-
-			message: '#^Cannot access property \$value on App\\Enums\\Currency\|string\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Livewire/Admin/Projects/Form.php
-
-		-
-			message: '#^Cannot access property \$value on string\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Livewire/Admin/Projects/Form.php
-
-		-
-			message: '#^Parameter \#2 \$currency of method App\\Livewire\\Admin\\Projects\\Form\:\:toMinor\(\) expects App\\Enums\\Currency, App\\Enums\\Currency\|string given\.$#'
-			identifier: argument.type
-			count: 2
-			path: app/Livewire/Admin/Projects/Form.php
-
-		-
 			message: '#^Access to an undefined property App\\Livewire\\Admin\\Projects\\InvoiceManager\:\:\$invoices\.$#'
 			identifier: property.notFound
 			count: 1
@@ -149,12 +131,6 @@ parameters:
 			identifier: identical.alwaysFalse
 			count: 1
 			path: app/Livewire/Admin/Projects/InvoiceManager.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\:\:visibleTo\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Livewire/Admin/Projects/Kanban.php
 
 		-
 			message: '#^Method App\\Livewire\\Admin\\Projects\\Kanban\:\:reorderTickets\(\) has parameter \$ticketIds with no value type specified in iterable type array\.$#'
@@ -1075,12 +1051,6 @@ parameters:
 			path: app/Models/RevisionTicket.php
 
 		-
-			message: '#^Method App\\Models\\RevisionTicket\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/RevisionTicket.php
-
-		-
 			message: '#^Method App\\Models\\RevisionTicket\:\:scopeVisibleTo\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
 			identifier: missingType.generics
 			count: 1
@@ -1429,18 +1399,6 @@ parameters:
 			path: app/Policies/TicketPolicy.php
 
 		-
-			message: '#^Parameter \#2 \$project of method App\\Policies\\TicketPolicy\:\:canAccessProject\(\) expects App\\Models\\Project\|null, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
-			identifier: argument.type
-			count: 2
-			path: app/Policies/TicketPolicy.php
-
-		-
-			message: '#^Parameter \#2 \$project of method App\\Policies\\TicketPolicy\:\:isAssigned\(\) expects App\\Models\\Project\|null, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Policies/TicketPolicy.php
-
-		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:isClient\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -1563,12 +1521,6 @@ parameters:
 		-
 			message: '#^Offset ''invoice'' does not exist on null\.$#'
 			identifier: offsetAccess.notFound
-			count: 1
-			path: app/Services/QuotationService.php
-
-		-
-			message: '#^Parameter \#1 \$currency of static method App\\Support\\QuotationCalculator\:\:calculate\(\) expects App\\Enums\\Currency, string given\.$#'
-			identifier: argument.type
 			count: 1
 			path: app/Services/QuotationService.php
 

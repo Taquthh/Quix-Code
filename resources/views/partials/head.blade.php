@@ -9,9 +9,6 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-<link rel="preconnect" href="https://fonts.bunny.net">
-<link href="https://fonts.bunny.net/css?family=outfit:500,600,700|plus-jakarta-sans:400,500,600,700&display=swap" rel="stylesheet" />
-
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 {{-- Tema bawaan per area (admin gelap, portal terang). Pilihan pengguna di Settings > Appearance tetap dihormati. --}}
 <script>

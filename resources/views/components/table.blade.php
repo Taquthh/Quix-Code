@@ -11,7 +11,7 @@
             @endisset
 
             @unless ($empty)
-                <tbody class="divide-y divide-slate-200 dark:divide-slate-800 [&_td]:px-4 [&_td]:py-3">
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-800 [&_tr]:transition-colors [&_tr:hover]:bg-slate-50/80 dark:[&_tr:hover]:bg-slate-800/40 [&_td]:px-4 [&_td]:py-3">
                     {{ $slot }}
                 </tbody>
             @endunless

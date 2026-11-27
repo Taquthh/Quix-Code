@@ -17,6 +17,9 @@ return [
         'client_preview_ended' => 'Pratinjau portal klien diakhiri',
         'milestone_status_changed' => 'Status milestone berubah',
         'milestone_accepted' => 'Klien menerima hasil milestone',
+        'progress_full_confirmed' => 'Progres 100% dikonfirmasi admin',
+        'webhook_secret_rotated' => 'Secret webhook GitHub diputar',
+        'webhook_replayed' => 'Pengiriman webhook diulang',
         'user_deactivated' => 'Pengguna dinonaktifkan',
         'user_reactivated' => 'Pengguna diaktifkan kembali',
         'admin_project_availability_changed' => 'Ketersediaan admin untuk proyek diubah',
@@ -34,5 +37,8 @@ return [
         'quotation_superseded' => 'Quotation digantikan versi baru',
         'quotation_expired' => 'Quotation kedaluwarsa',
         'quotation_reminded' => 'Pengingat masa berlaku quotation',
+        'invoice_reminded' => 'Pengingat invoice terkirim',
+        'ticket_sla_breached' => 'Tiket melewati batas waktu balasan',
+        'notification_template_updated' => 'Template notifikasi diperbarui',
     ],
 ];

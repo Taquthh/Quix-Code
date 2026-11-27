@@ -37,6 +37,12 @@ enum ActivityAction: string
     case ClientPreviewEnded = 'client_preview_ended';
     case MilestoneStatusChanged = 'milestone_status_changed';
     case MilestoneAccepted = 'milestone_accepted';
+    case ProgressFullConfirmed = 'progress_full_confirmed';
+    case WebhookSecretRotated = 'webhook_secret_rotated';
+    case WebhookReplayed = 'webhook_replayed';
+    case InvoiceReminded = 'invoice_reminded';
+    case TicketSlaBreached = 'ticket_sla_breached';
+    case NotificationTemplateUpdated = 'notification_template_updated';
 
     public function label(): string
     {

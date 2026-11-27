@@ -12,6 +12,7 @@ use App\Enums\QuotationStatus;
 use App\Enums\UserRole;
 use App\Support\ActivityLogger;
 use App\Support\Money;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,7 +27,29 @@ use Illuminate\Support\Facades\Schema;
 use InvalidArgumentException;
 
 /**
+ * @property string $id
+ * @property int $client_id
+ * @property string $title
+ * @property string|null $description
  * @property ProjectStatus $status
+ * @property int $progress_percent
+ * @property string|null $github_repo
+ * @property string|null $webhook_secret
+ * @property string|null $lead_source
+ * @property array<string, string>|null $utm
+ * @property Currency $currency
+ * @property int|null $budget_reference
+ * @property int|null $final_price
+ * @property string|null $on_hold_from
+ * @property string|null $on_hold_reason
+ * @property string|null $cancelled_reason
+ * @property CarbonInterface|null $progress_pending_confirm_at
+ * @property CarbonInterface|null $handover_at
+ * @property CarbonInterface|null $warranty_ends_at
+ * @property CarbonInterface|null $completed_at
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property CarbonInterface|null $deleted_at
  */
 class Project extends Model
 {
@@ -54,6 +77,7 @@ class Project extends Model
             'progress_percent' => 'integer',
             'webhook_secret' => 'encrypted',
             'utm' => 'array',
+            'progress_pending_confirm_at' => 'datetime',
             'handover_at' => 'datetime',
             'budget_reference' => 'integer',
             'final_price' => 'integer',
@@ -327,6 +351,18 @@ class Project extends Model
         $this->completeReachedMilestones();
 
         return $this;
+    }
+
+    /** Progres otomatis (webhook GitHub) hanya diterapkan saat proyek dikerjakan atau dijeda (T5-04). */
+    public function acceptsAutomaticProgress(): bool
+    {
+        return in_array($this->status, [ProjectStatus::Active, ProjectStatus::OnHold], true);
+    }
+
+    /** Ada push [progress:100%] yang menunggu konfirmasi admin (T5-05). */
+    public function isAwaitingFullProgressConfirmation(): bool
+    {
+        return $this->progress_pending_confirm_at !== null && $this->status === ProjectStatus::Active;
     }
 
     public function budgetReferenceMoney(): ?Money

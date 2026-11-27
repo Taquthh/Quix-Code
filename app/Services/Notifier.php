@@ -10,8 +10,10 @@ use App\Models\Quotation;
 use App\Models\RevisionTicket;
 use App\Models\TicketComment;
 use App\Models\User;
+use App\Notifications\Contracts\UsesNotificationTemplate;
 use App\Notifications\DownPaymentInvoiceNotification;
 use App\Notifications\InvoiceIssuedNotification;
+use App\Notifications\InvoiceReminderNotification;
 use App\Notifications\PaymentRejectedNotification;
 use App\Notifications\PaymentVerifiedNotification;
 use App\Notifications\QuotationExpiringNotification;
@@ -59,6 +61,16 @@ class Notifier
 
         if ($project !== null) {
             $this->deliver(User::query()->find($project->client_id), new InvoiceIssuedNotification($invoice, $project), 'invoice_issued');
+        }
+    }
+
+    /** Pengingat invoice belum dibayar (T5-11). $kind: due_soon | due_today | overdue. */
+    public function invoiceReminder(Invoice $invoice, string $kind): void
+    {
+        $project = Project::query()->with('client')->find($invoice->project_id);
+
+        if ($project !== null) {
+            $this->deliver(User::query()->find($project->client_id), new InvoiceReminderNotification($invoice, $project, $kind), 'invoice_reminder_'.$kind);
         }
     }
 
@@ -111,15 +123,38 @@ class Notifier
             return false;
         }
 
+        $locale = $user->locale ?: config('app.locale');
+
+        // WhatsApp lebih dulu (hanya klien beropt-in); email menjadi cadangan bila gagal (T5-10).
+        $templated = $notification instanceof UsesNotificationTemplate ? $notification : null;
+        $whatsapp = WhatsappSender::NOT_ATTEMPTED;
+
+        if ($templated !== null) {
+            $whatsapp = app(WhatsappSender::class)->send($user, $templated, $locale);
+
+            if ($whatsapp === WhatsappSender::DUPLICATE) {
+                return true;
+            }
+
+            if ($whatsapp === WhatsappSender::SENT) {
+                return $this->notifyBellOnly($user, $templated, $locale);
+            }
+        }
+
+        $templateVersion = $this->applyTemplate($user, $notification, $locale);
+
         $log = NotificationLog::create([
             'user_id' => $user->id,
             'channel' => 'email',
             'template' => $template,
+            'template_version' => $templateVersion,
+            'locale' => $locale,
+            'fallback_used' => $whatsapp === WhatsappSender::FAILED,
             'status' => 'queued',
         ]);
 
         try {
-            $user->notify($notification->locale($user->locale ?: config('app.locale')));
+            $user->notify($notification->locale($locale));
 
             $log->forceFill(['status' => 'sent', 'sent_at' => now()])->save();
 
@@ -130,6 +165,52 @@ class Notifier
             $log->forceFill(['status' => 'failed', 'error' => mb_substr($e->getMessage(), 0, 1000)])->save();
 
             return false;
+        }
+    }
+
+    /** WhatsApp sudah terkirim: hanya lonceng portal yang disimpan, email tidak dikirim. */
+    private function notifyBellOnly(User $user, UsesNotificationTemplate&Notification $notification, string $locale): bool
+    {
+        try {
+            $notification->suppressMail();
+            $user->notify($notification->locale($locale));
+
+            return true;
+        } catch (Throwable $e) {
+            report($e);
+
+            return false;
+        }
+    }
+
+    /**
+     * Pasang template buatan admin bila ada untuk kunci dan bahasa penerima (T5-13).
+     * Tanpa template, atau bila template gagal dirender, email memakai teks bawaan lang/.
+     *
+     * @return int|null versi template yang dipakai, null bila teks bawaan
+     */
+    private function applyTemplate(User $user, Notification $notification, string $locale): ?int
+    {
+        if (! $notification instanceof UsesNotificationTemplate) {
+            return null;
+        }
+
+        try {
+            $service = app(NotificationTemplateService::class);
+            $template = $service->latest($notification->templateKey(), $locale, 'email');
+
+            if ($template === null) {
+                return null;
+            }
+
+            $variables = $service->variablesFor($notification, $user, $locale);
+            $notification->applyTemplate($service->renderTemplate($template, $variables));
+
+            return $template->version;
+        } catch (Throwable $e) {
+            report($e);
+
+            return null;
         }
     }
 }

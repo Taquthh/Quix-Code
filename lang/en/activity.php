@@ -16,6 +16,9 @@ return [
         'client_preview_started' => 'Client portal preview started',
         'client_preview_ended' => 'Client portal preview ended',
         'milestone_accepted' => 'Client accepted milestone result',
+        'progress_full_confirmed' => 'Admin confirmed 100% progress',
+        'webhook_secret_rotated' => 'GitHub webhook secret rotated',
+        'webhook_replayed' => 'Webhook delivery replayed',
         'milestone_status_changed' => 'Milestone status changed',
         'user_deactivated' => 'User deactivated',
         'user_reactivated' => 'User reactivated',
@@ -34,5 +37,8 @@ return [
         'quotation_superseded' => 'Quotation superseded by a new version',
         'quotation_expired' => 'Quotation expired',
         'quotation_reminded' => 'Quotation expiry reminder',
+        'invoice_reminded' => 'Invoice reminder sent',
+        'ticket_sla_breached' => 'Ticket passed its reply deadline',
+        'notification_template_updated' => 'Notification template updated',
     ],
 ];

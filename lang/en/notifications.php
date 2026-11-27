@@ -28,6 +28,18 @@ return [
             'title' => 'Invoice :number issued',
             'body' => 'Project :project: :amount.',
         ],
+        'invoice_due_soon' => [
+            'title' => 'Invoice :number is due soon',
+            'body' => 'Project :project: :amount is still unpaid.',
+        ],
+        'invoice_due_today' => [
+            'title' => 'Invoice :number is due today',
+            'body' => 'Project :project: :amount is still unpaid.',
+        ],
+        'invoice_overdue' => [
+            'title' => 'Invoice :number is overdue',
+            'body' => 'Project :project: :amount is unpaid and past its due date.',
+        ],
         'payment_verified' => [
             'title' => 'Payment for invoice :number received',
             'body' => 'Project :project: :amount has been verified.',

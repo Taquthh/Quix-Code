@@ -93,7 +93,7 @@
                 @foreach ($commits as $commit)
                     <li wire:key="portal-commit-{{ $commit->id }}" class="relative">
                         <span class="absolute -start-[1.4rem] top-1.5 size-2.5 rounded-full bg-growth" aria-hidden="true"></span>
-                        <p class="break-words text-sm text-slate-900 dark:text-slate-50">{{ $commit->commit_message }}</p>
+                        <p class="break-words text-sm text-slate-900 dark:text-slate-50">{{ $commit->commit_message !== '' ? $commit->commit_message : __('portal.timeline_fallback') }}</p>
                         <p class="mt-0.5 text-xs text-slate-600 dark:text-slate-400">
                             {{ $commit->pushed_at->translatedFormat('d M Y H:i') }}
                             @if ($commit->progress_recorded !== null) · {{ __('portal.timeline_progress', ['percent' => $commit->progress_recorded]) }} @endif

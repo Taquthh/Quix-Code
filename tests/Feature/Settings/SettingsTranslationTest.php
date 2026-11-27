@@ -21,6 +21,11 @@ function settingsTranslationKeys(): array
         resource_path('views/components/passkey-registration.blade.php'),
         resource_path('views/partials/settings-heading.blade.php'),
         app_path('Livewire/Settings'),
+        // Halaman auth (login, daftar, konfirmasi kata sandi, 2FA) memakai kunci yang sama.
+        resource_path('views/livewire/auth'),
+        resource_path('views/components/passkey-verify.blade.php'),
+        resource_path('views/components/auth-header.blade.php'),
+        resource_path('views/layouts/auth'),
     ];
 
     $files = [];
@@ -99,6 +104,18 @@ it('halaman Pengaturan tampil berbahasa Indonesia untuk akun berbahasa Indonesia
         ->assertSee('Ubah kata sandi')
         ->assertSee('Kata sandi saat ini')
         ->assertDontSee('Current password');
+});
+
+it('halaman konfirmasi kata sandi tampil berbahasa Indonesia', function () {
+    $user = User::factory()->client()->create(['locale' => 'id']);
+
+    $this->actingAs($user)->get(route('password.confirm'))
+        ->assertOk()
+        ->assertSee('Konfirmasi dengan passkey')
+        ->assertSee('Atau konfirmasi dengan kata sandi')
+        ->assertSee('Konfirmasi kata sandi Anda sebelum melanjutkan', false)
+        ->assertDontSee('Confirm with passkey')
+        ->assertDontSee('This is a secure area of the application');
 });
 
 it('halaman Pengaturan tetap berbahasa Inggris untuk akun berbahasa Inggris', function () {

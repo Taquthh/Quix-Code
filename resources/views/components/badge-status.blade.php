@@ -28,7 +28,7 @@
     ][$tone];
 
     $text = $label
-        ?? (($status instanceof \\BackedEnum && method_exists($status, 'label')) ? $status->label() : \\Illuminate\\Support\\Str::headline($value));
+        ?? (($status instanceof \BackedEnum && method_exists($status, 'label')) ? $status->label() : \Illuminate\Support\Str::headline($value));
 @endphp
 
 <span {{ $attributes->class(['inline-flex items-center whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset', $classes]) }}>

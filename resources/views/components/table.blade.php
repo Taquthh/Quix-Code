@@ -1,4 +1,4 @@
-@props(['empty' => false, 'emptyTitle' => null, 'emptyDescription' => null, 'loadingTarget' => null])
+@props(['empty' => false, 'emptyTitle' => null, 'emptyDescription' => null, 'loadingTarget' => null, 'loading' => false, 'error' => null])
 
 {{-- Pakai <x-slot:head> untuk baris <tr><th>…; isi default adalah <tr> di dalam <tbody>. --}}
 <div {{ $attributes->class('relative overflow-hidden rounded-card border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900') }}>
@@ -10,7 +10,7 @@
                 </thead>
             @endisset
 
-            @unless ($empty)
+            @unless ($empty || $loading || $error)
                 <tbody class="divide-y divide-slate-200 dark:divide-slate-800 [&_tr]:transition-colors [&_tr:hover]:bg-slate-50/80 dark:[&_tr:hover]:bg-slate-800/40 [&_td]:px-4 [&_td]:py-3">
                     {{ $slot }}
                 </tbody>
@@ -18,7 +18,11 @@
         </table>
     </div>
 
-    @if ($empty)
+    @if ($loading)
+        <div class="p-card"><x-skeleton :lines="4" /></div>
+    @elseif ($error)
+        <div class="p-card"><x-alert type="danger">{{ $error }}</x-alert></div>
+    @elseif ($empty)
         <x-empty-state :title="$emptyTitle" :description="$emptyDescription" />
     @endif
 

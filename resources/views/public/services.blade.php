@@ -67,7 +67,7 @@
                         <ul class="space-y-2.5 pt-2 text-sm text-slate-700">
                             @foreach ($deliverables as $item)
                                 <li class="flex items-start gap-2.5">
-                                    <span class="mt-1 inline-block size-1.5 shrink-0 rounded-full bg-emerald-600"></span>
+                                    <span class="mt-1 inline-block size-1.5 shrink-0 rounded-full bg-emerald-700"></span>
                                     <span>{{ $item }}</span>
                                 </li>
                             @endforeach
@@ -76,7 +76,7 @@
 
                     <div class="pt-8">
                         <a href="{{ route('public.start-project', ['locale' => $locale]) }}"
-                           class="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700">
+                           class="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700">
                             {{ __('public.services.request_quote') }}
                         </a>
                     </div>

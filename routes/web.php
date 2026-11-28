@@ -143,11 +143,11 @@ Route::middleware(['auth', 'verified', 'can:access-portal'])
         Route::livewire('notifications', PortalNotifications::class)->name('notifications');
     });
 
-// Halaman contoh komponen (hanya lokal/testing).
+// Styleguide komponen (T0-12): hanya local/testing; di staging/produksi rutenya tidak terdaftar (404).
 if (app()->environment(['local', 'testing'])) {
-    Route::view('design-system', 'design-system.demo')
+    Route::view('styleguide', 'design-system.demo')
         ->middleware(['auth', 'verified'])
-        ->name('design-system');
+        ->name('styleguide');
 }
 
 require __DIR__.'/settings.php';

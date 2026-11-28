@@ -9,7 +9,7 @@
 <div {{ $attributes }}>
     @if ($label || $showValue)
         <div class="mb-1.5 flex items-center justify-between gap-2 text-sm">
-            <span class="font-medium text-slate-700 dark:text-slate-200">{{ $label }}</span>
+            <span class="min-w-0 break-words font-medium text-slate-700 dark:text-slate-200">{{ $label }}</span>
             @if ($showValue)
                 <span class="tabular-nums text-slate-600 dark:text-slate-300">{{ $percent }}%</span>
             @endif

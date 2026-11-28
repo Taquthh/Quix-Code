@@ -31,7 +31,7 @@
         ?? (($status instanceof \BackedEnum && method_exists($status, 'label')) ? $status->label() : \Illuminate\Support\Str::headline($value));
 @endphp
 
-<span {{ $attributes->class(['inline-flex items-center whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset', $classes]) }}>
+<span title="{{ $text }}" {{ $attributes->class(['inline-flex max-w-full items-center whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset', $classes]) }}>
     <span aria-hidden="true" class="me-1.5 size-1.5 shrink-0 rounded-full {{ $dotClasses }}"></span>
-    {{ $text }}
+    <span class="min-w-0 truncate">{{ $text }}</span>
 </span>

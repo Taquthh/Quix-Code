@@ -9,8 +9,8 @@
     </span>
 
     <div class="space-y-1">
-        <h3 class="font-heading text-base font-semibold text-slate-900 dark:text-slate-50">{{ $title ?? __('ui.empty_title') }}</h3>
-        <p class="max-w-sm text-sm leading-6 text-slate-600 dark:text-slate-400">{{ $description ?? __('ui.empty_description') }}</p>
+        <h3 class="break-words font-heading text-base font-semibold text-slate-900 dark:text-slate-50">{{ $title ?? __('ui.empty_title') }}</h3>
+        <p class="max-w-sm break-words text-sm leading-6 text-slate-600 dark:text-slate-400">{{ $description ?? __('ui.empty_description') }}</p>
     </div>
 
     @if ($slot->isNotEmpty())

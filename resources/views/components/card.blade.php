@@ -4,7 +4,7 @@
     @if ($title || isset($header))
         <header class="flex items-center justify-between gap-3 border-b border-slate-200 px-card py-3 dark:border-slate-800">
             @if ($title)
-                <h3 class="font-heading text-base font-semibold text-slate-900 dark:text-slate-50">{{ $title }}</h3>
+                <h3 class="min-w-0 break-words font-heading text-base font-semibold text-slate-900 dark:text-slate-50">{{ $title }}</h3>
             @endif
             @isset($header)
                 <div>{{ $header }}</div>

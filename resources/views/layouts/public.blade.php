@@ -56,10 +56,7 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.bunny.net/css?family=outfit:600,700|plus-jakarta-sans:400,500,600,700&display=swap" />
-    <link href="https://fonts.bunny.net/css?family=outfit:600,700|plus-jakarta-sans:400,500,600,700&display=swap" rel="stylesheet" />
-
+    {{-- Font Outfit + Plus Jakarta Sans dimuat lokal lewat @fontsource-variable di resources/css/app.css (T0-03, tanpa CDN). --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @if ($captchaSiteKey !== '')
@@ -107,11 +104,11 @@
         ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
     </script>
 </head>
-<body class="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-emerald-600 selection:text-white" x-data="{ mobileMenu: false }">
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-emerald-700 selection:text-white" x-data="{ mobileMenu: false }">
     <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-slate-950/95 text-slate-100 backdrop-blur">
         <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
             <a href="{{ route('public.home', ['locale' => $activeLocale]) }}" class="flex items-center gap-2.5 font-heading text-lg font-bold tracking-tight text-white">
-                <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-sm font-bold text-white">QC</span>
+                <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-700 text-sm font-bold text-white">QC</span>
                 <span>Quix Code</span>
             </a>
 
@@ -129,7 +126,7 @@
                     @foreach (['IDR', 'USD'] as $curr)
                         <form method="POST" action="{{ route('public.currency', $curr) }}">
                             @csrf
-                            <button type="submit" class="min-h-8 rounded-md px-2.5 py-1 font-medium transition {{ $selectedCurrency->value === $curr ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:text-white' }}">
+                            <button type="submit" class="min-h-8 rounded-md px-2.5 py-1 font-medium transition {{ $selectedCurrency->value === $curr ? 'bg-emerald-700 text-white' : 'text-slate-300 hover:text-white' }}">
                                 {{ $curr }}
                             </button>
                         </form>
@@ -159,7 +156,7 @@
                 @endauth
                 @endunless
 
-                <a href="{{ route('public.start-project', ['locale' => $activeLocale]) }}" class="inline-flex min-h-11 items-center rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-500">
+                <a href="{{ route('public.start-project', ['locale' => $activeLocale]) }}" class="inline-flex min-h-11 items-center rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-800">
                     {{ __('public.nav.start_project') }}
                 </a>
             </div>
@@ -190,14 +187,14 @@
                     @foreach (['IDR', 'USD'] as $curr)
                         <form method="POST" action="{{ route('public.currency', $curr) }}">
                             @csrf
-                            <button type="submit" class="min-h-10 rounded-md border border-slate-700 px-3 py-1.5 text-xs font-medium {{ $selectedCurrency->value === $curr ? 'bg-emerald-600 text-white' : 'text-slate-300' }}">
+                            <button type="submit" class="min-h-10 rounded-md border border-slate-700 px-3 py-1.5 text-xs font-medium {{ $selectedCurrency->value === $curr ? 'bg-emerald-700 text-white' : 'text-slate-300' }}">
                                 {{ $curr }}
                             </button>
                         </form>
                     @endforeach
                 </div>
                 @endunless
-                <a href="{{ route('public.start-project', ['locale' => $activeLocale]) }}" class="mt-2 inline-flex min-h-11 items-center justify-center rounded-lg bg-emerald-600 px-4 py-2.5 font-semibold text-white">
+                <a href="{{ route('public.start-project', ['locale' => $activeLocale]) }}" class="mt-2 inline-flex min-h-11 items-center justify-center rounded-lg bg-emerald-700 px-4 py-2.5 font-semibold text-white">
                     {{ __('public.nav.start_project') }}
                 </a>
             </div>
@@ -212,7 +209,7 @@
         <div class="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
             <div>
                 <div class="flex items-center gap-2.5 font-heading text-lg font-bold text-white">
-                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-sm font-bold text-white">QC</span>
+                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-700 text-sm font-bold text-white">QC</span>
                     <span>Quix Code</span>
                 </div>
                 <p class="mt-3 text-sm leading-relaxed text-slate-400">{{ __('public.footer.tagline') }}</p>

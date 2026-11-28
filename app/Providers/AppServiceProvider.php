@@ -104,7 +104,13 @@ class AppServiceProvider extends ServiceProvider
     protected function configureDefaults(): void
     {
         Date::use(CarbonImmutable::class);
+
+        // Mode ketat (T0-10), aktif di non-produksi: menangkap N+1 (lazy loading), atribut yang
+        // diam-diam terbuang, dan akses atribut yang tidak ada. Di produksi tidak melempar galat.
         Model::shouldBeStrict(! app()->isProduction());
+        Model::preventLazyLoading(! app()->isProduction());
+        Model::preventSilentlyDiscardingAttributes(! app()->isProduction());
+        Model::preventAccessingMissingAttributes(! app()->isProduction());
 
         DB::prohibitDestructiveCommands(
             app()->isProduction(),

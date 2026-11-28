@@ -28,7 +28,7 @@
 @theme inline {
   --color-midnight: var(--color-slate-950); /* landing page, admin */
   --color-ivory: var(--color-slate-50); /* body landing page, portal klien */
-  --color-growth: var(--color-emerald-600); /* CTA utama, progres selesai */
+  --color-growth: var(--color-emerald-700); /* CTA utama (putih di atasnya 5,48:1, WCAG AA); progres selesai */
 }
 
 @layer base {

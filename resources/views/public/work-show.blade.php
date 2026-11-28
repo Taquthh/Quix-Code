@@ -50,7 +50,7 @@
                 </p>
                 <div class="mt-5">
                     <a href="{{ route('public.start-project', ['locale' => $locale]) }}"
-                       class="inline-flex min-h-11 items-center rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700">
+                       class="inline-flex min-h-11 items-center rounded-xl bg-emerald-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700">
                         {{ __('public.nav.start_project') }}
                     </a>
                 </div>

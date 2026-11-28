@@ -19,7 +19,7 @@
                 @endphp
                 <li data-onboarding-step="{{ $step['key'] }}" data-state="{{ $step['state'] }}" @if ($current) aria-current="step" @endif
                     class="flex items-start gap-3 rounded-card border p-3 {{ $current ? 'border-amber-300 bg-amber-50 dark:border-amber-500/40 dark:bg-amber-500/10' : 'border-slate-200 dark:border-slate-700' }}">
-                    <span aria-hidden="true" class="flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold {{ $done ? 'bg-emerald-600 text-white' : ($current ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200') }}">{{ $done ? '✓' : $index + 1 }}</span>
+                    <span aria-hidden="true" class="flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold {{ $done ? 'bg-emerald-700 text-white' : ($current ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200') }}">{{ $done ? '✓' : $index + 1 }}</span>
                     <div class="min-w-0 flex-1">
                         <p class="break-words text-sm font-semibold text-slate-900 dark:text-slate-50">
                             {{ __("help.onboarding.steps.{$step['key']}.title") }}

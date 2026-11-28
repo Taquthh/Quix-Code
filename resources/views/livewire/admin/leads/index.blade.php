@@ -16,6 +16,29 @@
         </flux:select>
     </div>
 
+    <section class="rounded-xl border border-slate-200 p-4 dark:border-slate-800" aria-labelledby="utm-summary-title">
+        <h2 id="utm-summary-title" class="font-heading text-sm font-semibold text-slate-900 dark:text-slate-50">{{ __('quotations.leads.utm_title') }}</h2>
+        <p class="text-xs text-slate-600 dark:text-slate-400">{{ __('quotations.leads.utm_hint') }}</p>
+        @if (collect($utmSummary)->contains(fn ($row) => $row['source'] !== '' || $row['campaign'] !== ''))
+            <dl class="mt-3 grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-3">
+                @foreach ($utmSummary as $row)
+                    <div class="flex items-center justify-between gap-3 rounded-lg bg-slate-50 px-3 py-2 dark:bg-slate-900">
+                        <dt class="truncate text-slate-700 dark:text-slate-300">
+                            @if ($row['source'] === '' && $row['campaign'] === '')
+                                {{ __('quotations.leads.utm_direct') }}
+                            @else
+                                {{ $row['source'] !== '' ? $row['source'] : '—' }}@if ($row['campaign'] !== '') · {{ $row['campaign'] }}@endif
+                            @endif
+                        </dt>
+                        <dd class="font-semibold tabular-nums text-slate-900 dark:text-slate-50">{{ $row['count'] }}</dd>
+                    </div>
+                @endforeach
+            </dl>
+        @else
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-400">{{ __('quotations.leads.utm_none') }}</p>
+        @endif
+    </section>
+
     <x-table :empty="$leads->isEmpty()" :empty-title="__('quotations.leads.none')" :empty-description="__('quotations.leads.none_hint')">
         <x-slot:head>
             <tr>
@@ -34,7 +57,15 @@
                 <td class="font-medium text-slate-900 dark:text-slate-50">{{ $lead->title }}</td>
                 <td>{{ $lead->client?->name }}</td>
                 <td><x-badge-status :status="$lead->status" /></td>
-                <td>{{ $lead->lead_source ? __('projects.lead_sources.'.$lead->lead_source) : '—' }}</td>
+                <td>
+                    {{ $lead->lead_source ? __('projects.lead_sources.'.$lead->lead_source) : '—' }}
+                    @php($utm = (array) $lead->utm)
+                    @if (! empty($utm['utm_source']) || ! empty($utm['utm_campaign']))
+                        <div class="mt-0.5 text-xs text-slate-600 dark:text-slate-400">
+                            {{ collect([$utm['utm_source'] ?? null, $utm['utm_medium'] ?? null, $utm['utm_campaign'] ?? null])->filter()->implode(' · ') }}
+                        </div>
+                    @endif
+                </td>
                 <td>
                     @if ($lead->latestQuotation)
                         <span class="tabular-nums">v{{ $lead->latestQuotation->version }} · {{ $lead->latestQuotation->totalMoney()->format() }}</span>

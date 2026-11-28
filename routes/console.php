@@ -37,3 +37,6 @@ Schedule::command('invoices:remind')->dailyAt('01:30')->withoutOverlapping();
 Schedule::command('projects:hold-unpaid-dp')->dailyAt('02:30')->withoutOverlapping();
 Schedule::command('tickets:check-sla')->hourly()->withoutOverlapping();
 Schedule::command('webhooks:purge')->dailyAt('03:15')->withoutOverlapping();
+
+// Kurs estimasi publik (T6-09): perbarui dua kali sehari; perintah ini juga memeriksa kesegaran (> 48 jam) dan memperingatkan admin.
+Schedule::command('rates:update')->twiceDaily(4, 16)->withoutOverlapping();

@@ -24,11 +24,11 @@
     <body class="min-h-screen bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-200" data-portal-layout>
         <a href="#portal-main" class="sr-only focus:not-sr-only focus:absolute focus:start-2 focus:top-2 focus:z-50 focus:rounded-md focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:text-slate-900">{{ __('portal.nav.skip') }}</a>
 
-        <div class="lg:grid lg:min-h-screen lg:grid-cols-[16rem_minmax(0,1fr)]">
+        <div class="lg:grid lg:min-h-screen lg:grid-cols-[17rem_minmax(0,1fr)]">
             {{-- Sidebar desktop --}}
-            <aside class="sticky top-0 hidden h-screen flex-col gap-6 border-e border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 lg:flex" aria-label="{{ __('portal.nav.label') }}">
-                <a href="{{ route('portal.overview') }}" wire:navigate class="flex items-center gap-2 px-2 py-1">
-                    <span class="flex size-8 items-center justify-center rounded-md bg-growth font-heading text-lg font-bold text-white">Q</span>
+            <aside class="sticky top-0 hidden h-screen flex-col gap-6 border-e border-slate-200/80 bg-white/90 p-5 shadow-[4px_0_28px_rgb(15_23_42_/_0.035)] backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/95 dark:shadow-none lg:flex" aria-label="{{ __('portal.nav.label') }}">
+                <a href="{{ route('portal.overview') }}" wire:navigate class="flex items-center gap-3 px-2 py-1">
+                    <span aria-hidden="true" class="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 font-heading text-lg font-bold text-white shadow-lg shadow-emerald-950/15">Q</span>
                     <span class="font-heading text-base font-semibold text-slate-900 dark:text-slate-50">{{ config('app.name') }}</span>
                 </a>
 
@@ -73,9 +73,9 @@
 
             <div class="flex min-w-0 flex-col">
                 {{-- Bilah atas ponsel --}}
-                <header class="sticky top-0 z-30 flex min-h-14 items-center justify-between gap-2 border-b border-slate-200 bg-white px-4 dark:border-slate-800 dark:bg-slate-900 lg:hidden">
-                    <a href="{{ route('portal.overview') }}" wire:navigate class="flex min-h-11 items-center gap-2">
-                        <span class="flex size-8 items-center justify-center rounded-md bg-growth font-heading text-lg font-bold text-white">Q</span>
+                <header class="sticky top-0 z-30 flex min-h-16 items-center justify-between gap-2 border-b border-slate-200/80 bg-white/90 px-4 shadow-sm backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/90 lg:hidden">
+                    <a href="{{ route('portal.overview') }}" wire:navigate class="flex min-h-11 items-center gap-3">
+                        <span aria-hidden="true" class="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 font-heading text-lg font-bold text-white shadow-lg shadow-emerald-950/15">Q</span>
                         <span class="font-heading text-base font-semibold text-slate-900 dark:text-slate-50">{{ config('app.name') }}</span>
                     </a>
                     <div class="flex items-center gap-2">
@@ -97,14 +97,14 @@
                     </div>
                 </header>
 
-                <main id="portal-main" class="mx-auto w-full min-w-0 max-w-5xl flex-1 px-4 py-6 pb-28 lg:px-8 lg:py-8 lg:pb-10">
+                <main id="portal-main" class="mx-auto w-full min-w-0 max-w-6xl flex-1 px-4 py-6 pb-28 lg:px-10 lg:py-9 lg:pb-12">
                     {{ $slot }}
                 </main>
             </div>
         </div>
 
         {{-- Navigasi bawah ponsel --}}
-        <nav class="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white pb-[env(safe-area-inset-bottom)] dark:border-slate-800 dark:bg-slate-900 lg:hidden"
+        <nav class="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200/80 bg-white/90 pb-[env(safe-area-inset-bottom)] shadow-[0_-6px_24px_rgb(15_23_42_/_0.04)] backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/90 dark:shadow-none lg:hidden"
              aria-label="{{ __('portal.nav.label') }}" data-portal-nav="bottom">
             <ul class="mx-auto flex max-w-xl">
                 @foreach ($bottomItems as $item)

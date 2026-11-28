@@ -74,6 +74,13 @@ return [
         'latest' => 'Latest quotation',
         'no_quotation' => 'None yet',
         'unread' => 'New messages',
+        'utm_title' => 'Top lead sources',
+        'utm_hint' => 'Counted from UTM parameters saved with each lead (all projects).',
+        'utm_none' => 'No UTM data yet. Share links like /id/start-project?utm_source=instagram&utm_campaign=promo.',
+        'utm_source' => 'Source',
+        'utm_campaign' => 'Campaign',
+        'utm_count' => 'Leads',
+        'utm_direct' => '(direct / no UTM)',
     ],
 
     'negotiation' => [

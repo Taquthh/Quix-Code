@@ -17,7 +17,7 @@
         ];
     @endphp
 
-    <div class="mb-8 space-y-3">
+    <div class="mb-8 max-w-2xl space-y-4">
         <span class="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold tracking-wide text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
             {{ $t('public.intake.badge', 'Mulai Proyek', 'Start a Project') }}
         </span>
@@ -32,7 +32,7 @@
     @if ($submitted)
         <div class="rounded-2xl border border-emerald-200 bg-emerald-50/80 p-6 shadow-sm dark:border-emerald-500/30 dark:bg-emerald-950/40 sm:p-8" role="status" aria-live="polite">
             <div class="flex items-start gap-4">
-                <div class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white">
+                <div class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-emerald-700 text-white">
                     <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                     </svg>
@@ -49,7 +49,7 @@
                     </p>
                     <div class="pt-2">
                         <a href="{{ url('/'.$locale) }}"
-                           class="inline-flex min-h-11 items-center justify-center rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700">
+                           class="inline-flex min-h-11 items-center justify-center rounded-lg bg-emerald-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700">
                             {{ $t('public.intake.back_home', 'Kembali ke Beranda', 'Back to Home') }}
                         </a>
                     </div>
@@ -166,7 +166,27 @@
                 </div>
             </div>
 
-            <input type="hidden" wire:model="captcha_token" />
+            @if ($captchaSiteKey !== '')
+                {{-- Cloudflare Turnstile (T6-04): token dikirim ke Livewire lewat callback. --}}
+                <div wire:ignore
+                     x-data="{ id: null }"
+                     x-init="
+                        const mount = () => {
+                            if (! window.turnstile) { return setTimeout(mount, 150); }
+                            id = window.turnstile.render($refs.widget, {
+                                sitekey: @js($captchaSiteKey),
+                                language: @js($locale),
+                                callback: (token) => $wire.set('captcha_token', token),
+                                'expired-callback': () => $wire.set('captcha_token', ''),
+                                'error-callback': () => $wire.set('captcha_token', ''),
+                            });
+                        };
+                        mount();
+                        $wire.on('captcha-reset', () => { if (id !== null && window.turnstile) { window.turnstile.reset(id); } });
+                     ">
+                    <div x-ref="widget"></div>
+                </div>
+            @endif
             @error('captcha_token')
                 <p class="text-xs font-medium text-rose-600 dark:text-rose-400">{{ $message }}</p>
             @enderror
@@ -174,19 +194,14 @@
             <div class="space-y-1.5">
                 <label class="flex min-h-11 cursor-pointer items-start gap-3">
                     <input type="checkbox" wire:model="consent_privacy"
-                           class="mt-1 size-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-600 dark:border-slate-700 dark:bg-slate-950" />
+                           class="mt-1 size-4 rounded border-slate-300 text-emerald-700 focus:ring-emerald-600 dark:border-slate-700 dark:bg-slate-950" />
                     <span class="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
-                        @if ($locale === 'en')
-                            I agree to the processing of my personal data in accordance with the
-                            <a href="{{ url('/en/privacy') }}" class="font-medium text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400">Privacy Policy</a>
-                            and
-                            <a href="{{ url('/en/terms') }}" class="font-medium text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400">Terms &amp; Conditions</a>.
-                        @else
-                            Saya menyetujui pemrosesan data pribadi saya sesuai dengan
-                            <a href="{{ url('/id/privacy') }}" class="font-medium text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400">Kebijakan Privasi</a>
-                            dan
-                            <a href="{{ url('/id/terms') }}" class="font-medium text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400">Syarat &amp; Ketentuan</a>.
-                        @endif
+                        @php
+                            $linkClass = 'font-medium text-emerald-700 underline hover:text-emerald-800 dark:text-emerald-400';
+                            $privacyLink = '<a href="'.e(url('/'.$locale.'/privacy')).'" class="'.$linkClass.'">'.e(__('public.intake.consent_privacy_link', [], $locale)).'</a>';
+                            $termsLink = '<a href="'.e(url('/'.$locale.'/terms')).'" class="'.$linkClass.'">'.e(__('public.intake.consent_terms_link', [], $locale)).'</a>';
+                        @endphp
+                        {!! __('public.intake.consent_agree', ['privacy' => $privacyLink, 'terms' => $termsLink], $locale) !!}
                     </span>
                 </label>
                 @error('consent_privacy')
@@ -196,7 +211,7 @@
 
             <div class="pt-2">
                 <button type="submit" wire:loading.attr="disabled"
-                        class="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-xs transition hover:bg-emerald-700 disabled:opacity-60 sm:w-auto">
+                        class="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-emerald-700 px-6 py-3 text-sm font-semibold text-white shadow-xs transition hover:bg-emerald-800 disabled:opacity-60 sm:w-auto">
                     <span wire:loading.remove wire:target="submit">
                         {{ $t('public.intake.submit', 'Kirim Brief Proyek', 'Submit Project Brief') }}
                     </span>

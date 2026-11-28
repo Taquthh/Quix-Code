@@ -106,24 +106,31 @@ class StartProject extends Component
 
         $ip = request()->ip() ?? 'unknown';
         $rateKey = 'public-lead-intake:'.$ip;
+        $burstKey = 'public-lead-intake-burst:'.$ip;
 
-        if (RateLimiter::tooManyAttempts($rateKey, 5)) {
+        // Batas longgar untuk semua percobaan (termasuk validasi gagal) dan batas ketat untuk pengiriman valid,
+        // sehingga salah ketik tidak mengunci pengguna asli tetapi pengiriman beruntun tetap diblokir.
+        if (RateLimiter::tooManyAttempts($rateKey, 5) || RateLimiter::tooManyAttempts($burstKey, 30)) {
             $this->addError('email', __('public.intake.errors.rate_limited'));
 
             return;
         }
 
-        RateLimiter::hit($rateKey, 3600);
+        RateLimiter::hit($burstKey, 3600);
 
         $this->email = Str::lower(trim($this->email));
         $this->whatsapp = trim($this->whatsapp);
         $this->validate();
 
         if (! $captcha->verify($this->captcha_token, request()->ip())) {
+            $this->captcha_token = '';
+            $this->dispatch('captcha-reset');
             $this->addError('captcha_token', __('public.intake.errors.captcha_failed'));
 
             return;
         }
+
+        RateLimiter::hit($rateKey, 3600);
 
         $project = $intake->submit([
             'name' => $this->name,
@@ -150,10 +157,14 @@ class StartProject extends Component
         /** @var view-string $view */
         $view = 'livewire.public.start-project';
 
+        $captcha = app(CaptchaVerifier::class);
+
         return view($view, [
             'currencies' => Currency::cases(),
+            'captchaSiteKey' => $captcha->isEnabled() ? (string) config('services.captcha.site_key') : '',
         ])->layout('layouts::public', [
             'locale' => $this->locale,
+            'captcha' => $captcha->isEnabled(),
             'seo' => [
                 'title' => __('public.seo.start_title'),
                 'description' => __('public.seo.start_description'),

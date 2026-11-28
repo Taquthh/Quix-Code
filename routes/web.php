@@ -11,6 +11,7 @@ use App\Http\Controllers\Portal\OverviewController;
 use App\Http\Controllers\ProjectFileController;
 use App\Http\Controllers\Public\PublicCurrencyController;
 use App\Http\Controllers\Public\PublicPageController;
+use App\Http\Controllers\Public\RobotsController;
 use App\Http\Controllers\Public\SitemapController;
 use App\Http\Controllers\QuotationPrintController;
 use App\Http\Controllers\TicketScreenshotController;
@@ -41,8 +42,9 @@ use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 // Etalase publik default (ID) & SEO sitemap (Tahap 6).
-Route::get('/', [PublicPageController::class, 'home'])->name('home');
+Route::get('/', [PublicPageController::class, 'root'])->name('home');
 Route::get('sitemap.xml', SitemapController::class)->name('sitemap');
+Route::get('robots.txt', RobotsController::class)->name('robots');
 Route::post('public/currency/{currency}', PublicCurrencyController::class)->name('public.currency');
 
 // Etalase publik bilingual berprefiks /id dan /en (T6-01 s.d. T6-10).
@@ -141,11 +143,11 @@ Route::middleware(['auth', 'verified', 'can:access-portal'])
         Route::livewire('notifications', PortalNotifications::class)->name('notifications');
     });
 
-// Halaman contoh komponen (hanya lokal/testing).
+// Styleguide komponen (T0-12): hanya local/testing; di staging/produksi rutenya tidak terdaftar (404).
 if (app()->environment(['local', 'testing'])) {
-    Route::view('design-system', 'design-system.demo')
+    Route::view('styleguide', 'design-system.demo')
         ->middleware(['auth', 'verified'])
-        ->name('design-system');
+        ->name('styleguide');
 }
 
 require __DIR__.'/settings.php';

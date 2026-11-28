@@ -3,6 +3,7 @@
 use App\Enums\Currency;
 use App\Enums\ProjectStatus;
 use App\Enums\UserRole;
+use App\Livewire\Admin\Leads\Index;
 use App\Livewire\Public\StartProject;
 use App\Models\ActivityLog;
 use App\Models\CaseStudy;
@@ -12,12 +13,30 @@ use App\Models\User;
 use App\Models\UserConsent;
 use App\Notifications\LeadWelcomeNotification;
 use App\Notifications\OpsAlertNotification;
+use App\Services\ExchangeRateService;
 use Database\Seeders\PublicPortfolioSeeder;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
+
+// Tes harus hermetik: nilai CAPTCHA dan API kurs dari .env lokal tidak boleh memengaruhi hasil,
+// dan tidak ada permintaan HTTP sungguhan yang boleh keluar.
+beforeEach(function () {
+    config([
+        'services.captcha.driver' => 'none',
+        'services.captcha.secret_key' => null,
+        'services.captcha.site_key' => null,
+        'services.exchange_rate.url' => null,
+        'services.exchange_rate.key' => null,
+        'services.analytics.provider' => 'none',
+    ]);
+
+    Http::preventStrayRequests();
+});
 
 it('menampilkan halaman publik bilingual /id dan /en beserta tag hreflang dan sitemap', function () {
     $published = CaseStudy::factory()->published()->create([
@@ -183,4 +202,150 @@ it('seeder PublicPortfolioSeeder idempoten dan menghasilkan 3 studi kasus terpub
     $this->seed(PublicPortfolioSeeder::class);
 
     expect(CaseStudy::published()->count())->toBe(3);
+});
+
+it('menyajikan robots.txt dengan sitemap absolut dan halaman 404 tanpa sesi tetap tampil', function () {
+    $this->get('/robots.txt')
+        ->assertOk()
+        ->assertSee('Sitemap: '.url('/sitemap.xml'), false)
+        ->assertSee('Disallow: /admin', false);
+
+    $this->get('/en/halaman-tidak-ada')->assertNotFound()->assertSee('Page Not Found');
+    $this->get('/tidak-ada-sama-sekali')->assertNotFound();
+});
+
+it('menyertakan og:image, hreflang, dan JSON-LD pada halaman publik', function () {
+    $this->get('/en/services')
+        ->assertOk()
+        ->assertSee('property="og:image"', false)
+        ->assertSee('og-default.png', false)
+        ->assertSee('application/ld+json', false)
+        ->assertSee('rel="canonical" href="'.url('/en/services').'"', false);
+});
+
+it('menolak email akun internal dan mencatat persetujuan S&K selain Kebijakan Privasi', function () {
+    Notification::fake();
+    $admin = User::factory()->admin()->create(['email' => 'admin@quix.test']);
+
+    Livewire::test(StartProject::class, ['locale' => 'id'])
+        ->set('name', 'Penyusup')
+        ->set('email', 'admin@quix.test')
+        ->set('whatsapp', '081255556666')
+        ->set('title', 'Proyek Sisipan')
+        ->set('description', 'Mencoba menempelkan proyek ke akun admin lewat form publik.')
+        ->set('consent_privacy', true)
+        ->call('submit')
+        ->assertHasErrors(['email']);
+
+    expect(Project::where('client_id', $admin->id)->exists())->toBeFalse();
+
+    Livewire::test(StartProject::class, ['locale' => 'en'])
+        ->set('name', 'Jane Doe')
+        ->set('email', 'jane@acme.io')
+        ->set('whatsapp', '+1 202 555 0143')
+        ->set('title', 'Inventory Dashboard')
+        ->set('description', 'We need a multi-warehouse inventory dashboard with daily reports.')
+        ->set('consent_privacy', true)
+        ->call('submit')
+        ->assertHasNoErrors();
+
+    $jane = User::where('email', 'jane@acme.io')->firstOrFail();
+    expect(UserConsent::where('user_id', $jane->id)->pluck('type')->sort()->values()->all())
+        ->toBe(['privacy_policy', 'terms']);
+});
+
+it('salah ketik tidak menghabiskan jatah kirim, tetapi pengiriman valid beruntun diblokir', function () {
+    Notification::fake();
+
+    for ($i = 0; $i < 6; $i++) {
+        Livewire::test(StartProject::class, ['locale' => 'id'])
+            ->set('name', 'A')
+            ->call('submit')
+            ->assertHasErrors(['name']);
+    }
+
+    for ($i = 1; $i <= 5; $i++) {
+        Livewire::test(StartProject::class, ['locale' => 'id'])
+            ->set('name', 'Pengirim '.$i)
+            ->set('email', "pengirim{$i}@perusahaan.co.id")
+            ->set('whatsapp', '08120000000'.$i)
+            ->set('title', 'Proyek nomor '.$i)
+            ->set('description', 'Deskripsi proyek yang cukup panjang nomor '.$i)
+            ->set('consent_privacy', true)
+            ->call('submit')
+            ->assertHasNoErrors();
+    }
+
+    Livewire::test(StartProject::class, ['locale' => 'id'])
+        ->set('name', 'Pengirim 6')
+        ->set('email', 'pengirim6@perusahaan.co.id')
+        ->set('whatsapp', '081200000006')
+        ->set('title', 'Proyek nomor 6')
+        ->set('description', 'Deskripsi proyek yang cukup panjang nomor 6')
+        ->set('consent_privacy', true)
+        ->call('submit')
+        ->assertHasErrors(['email']);
+
+    expect(User::where('email', 'pengirim6@perusahaan.co.id')->exists())->toBeFalse();
+});
+
+it('menjadwalkan pembaruan kurs dan menolak token captcha kosong saat diaktifkan', function () {
+    $events = collect(app(Schedule::class)->events())
+        ->filter(fn ($e) => str_contains((string) $e->command, 'rates:update'));
+    expect($events)->not->toBeEmpty();
+
+    config([
+        'services.captcha.driver' => 'turnstile',
+        'services.captcha.secret_key' => 'secret',
+        'services.captcha.site_key' => 'site',
+    ]);
+
+    Livewire::test(StartProject::class, ['locale' => 'id'])
+        ->set('name', 'Penguji Captcha')
+        ->set('email', 'captcha@perusahaan.co.id')
+        ->set('whatsapp', '081211112222')
+        ->set('title', 'Proyek Captcha')
+        ->set('description', 'Deskripsi proyek untuk menguji captcha wajib diisi.')
+        ->set('consent_privacy', true)
+        ->call('submit')
+        ->assertHasErrors(['captcha_token']);
+});
+
+it('mengenali bentuk respons beberapa penyedia kurs dan menolak kurs tak wajar', function (array $payload, bool $stored) {
+    config(['services.exchange_rate.url' => 'https://rates.test/latest']);
+    Http::fake(['rates.test/*' => Http::response($payload)]);
+
+    $result = app(ExchangeRateService::class)->updateFromConfiguredSource();
+
+    expect($result !== null)->toBe($stored);
+
+    if ($stored) {
+        $usdToIdr = ExchangeRate::latestFor(Currency::USD, Currency::IDR);
+        expect((float) $usdToIdr->rate)->toBeGreaterThan(16_000)->toBeLessThan(16_500);
+    }
+})->with([
+    'open.er-api / basis IDR' => [['rates' => ['USD' => 0.0000615]], true],
+    'exchangerate-api.com' => [['conversion_rates' => ['USD' => 0.0000615]], true],
+    'exchangerate.host quotes' => [['quotes' => ['USDIDR' => 16260.5]], true],
+    'idr_per_usd langsung' => [['idr_per_usd' => 16250], true],
+    'basis EUR (USD per EUR ~1.08) ditolak' => [['rates' => ['USD' => 1.08]], false],
+    'galat penyedia ditolak' => [['success' => false, 'error' => ['code' => 101]], false],
+]);
+
+it('halaman Leads admin menampilkan UTM per lead dan ringkasan sumber terbaik', function () {
+    $admin = User::factory()->admin()->withTwoFactor()->create();
+
+    foreach ([['instagram', 'promo_des'], ['instagram', 'promo_des'], ['google', 'brand']] as [$source, $campaign]) {
+        $project = Project::factory()->create(['status' => ProjectStatus::Lead]);
+        $project->forceFill([
+            'lead_source' => 'website',
+            'utm' => ['utm_source' => $source, 'utm_campaign' => $campaign],
+        ])->save();
+    }
+
+    Livewire::actingAs($admin)
+        ->test(Index::class)
+        ->assertSee('instagram · promo_des')
+        ->assertSee('google · brand')
+        ->assertSee(__('quotations.leads.utm_title'));
 });

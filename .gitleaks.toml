@@ -1,0 +1,16 @@
+title = "Quix Code gitleaks"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Kunci uji publik (bukan rahasia)"
+regexes = [
+  '''1x0{20,}AA''',        # kunci uji Cloudflare Turnstile
+  '''test-key''',
+]
+paths = [
+  '''composer\.lock''',
+  '''package-lock\.json''',
+  '''data/.*\.docx''',
+]

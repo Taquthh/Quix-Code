@@ -50,6 +50,7 @@ class PublicLeadIntakeService
         $email = Str::lower(trim($input['email']));
         $normalizedPhone = $this->normalizeWhatsapp($input['whatsapp']);
 
+        $this->guardExistingAccount($email);
         $this->guardDuplicateLead($email, $normalizedPhone);
 
         /** @var array{project: Project, user: User, is_new_user: bool} $created */
@@ -102,6 +103,14 @@ class PublicLeadIntakeService
                 'granted_at' => now(),
             ]);
 
+            UserConsent::query()->create([
+                'user_id' => $user->id,
+                'type' => 'terms',
+                'version' => (string) config('quix.legal.terms_version', '2026.1'),
+                'ip' => $input['ip'],
+                'granted_at' => now(),
+            ]);
+
             ActivityLogger::log(ActivityAction::ProjectCreated, $project, [
                 'title' => $project->title,
                 'source' => 'public_intake',
@@ -127,6 +136,21 @@ class PublicLeadIntakeService
         }
 
         return $created['project'];
+    }
+
+    /**
+     * Email milik akun internal (admin/staf) atau akun nonaktif tidak boleh dipakai membuat prospek:
+     * mencegah proyek publik tertempel ke akun yang bukan klien.
+     */
+    private function guardExistingAccount(string $email): void
+    {
+        $existing = User::query()->where('email', $email)->first();
+
+        if ($existing !== null && ($existing->role !== UserRole::Client || ! $existing->is_active)) {
+            throw ValidationException::withMessages([
+                'email' => __('public.intake.errors.email_unavailable'),
+            ]);
+        }
     }
 
     private function guardDuplicateLead(string $email, ?string $normalizedPhone): void

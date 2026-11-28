@@ -21,7 +21,7 @@ test('tabel kosong menampilkan empty state', function () {
 
 test('halaman contoh memakai semua komponen dasar', function () {
     $this->actingAs(User::factory()->admin()->create())
-        ->get(route('design-system'))
+        ->get(route('styleguide'))
         ->assertOk()
         ->assertSee('Design System')
         ->assertSee('role="progressbar"', false)
@@ -35,7 +35,7 @@ test('bahasa default adalah Indonesia', function () {
 
 test('akun dengan locale en melihat teks Inggris', function () {
     $this->actingAs(User::factory()->admin()->create(['locale' => 'en']))
-        ->get(route('design-system'))
+        ->get(route('styleguide'))
         ->assertSee('Status badges');
 });
 

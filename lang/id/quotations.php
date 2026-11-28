@@ -74,6 +74,13 @@ return [
         'latest' => 'Penawaran terakhir',
         'no_quotation' => 'Belum ada',
         'unread' => 'Pesan baru',
+        'utm_title' => 'Sumber lead terbaik',
+        'utm_hint' => 'Dihitung dari parameter UTM yang tersimpan pada setiap lead (semua proyek).',
+        'utm_none' => 'Belum ada data UTM. Bagikan tautan seperti /id/start-project?utm_source=instagram&utm_campaign=promo.',
+        'utm_source' => 'Sumber',
+        'utm_campaign' => 'Kampanye',
+        'utm_count' => 'Lead',
+        'utm_direct' => '(langsung / tanpa UTM)',
     ],
 
     'negotiation' => [

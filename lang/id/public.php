@@ -107,6 +107,8 @@ return [
     'about' => [
         'title' => 'Tentang Quix Code',
         'subtitle' => 'Studio rekayasa perangkat lunak yang memadukan disiplin arsitektur backend dengan transparansi komunikasi klien.',
+        'team_title' => 'Tim Kami',
+        'team_subtitle' => 'Orang-orang yang merancang, membangun, dan menyerahkan proyek Anda.',
         'story_title' => 'Mengubah Cara Kerja Proyek Perangkat Lunak',
         'story_body' => 'Quix Code dibangun untuk menghilangkan ketidakpastian dalam pengembangan perangkat lunak. Setiap klien memperoleh akses langsung ke Client Portal untuk meninjau rincian biaya, memantau progres nyata dari repositori kode, mengajukan revisi terstruktur, dan menerima serah terima penuh setelah pelunasan.',
         'values' => [
@@ -166,6 +168,9 @@ return [
             'budget_reference' => 'Referensi anggaran (opsional)',
         ],
         'consent_prefix' => 'Saya menyetujui pemrosesan data pribadi saya untuk keperluan penawaran dan pembuatan akun portal sesuai',
+        'consent_agree' => 'Saya menyetujui pemrosesan data pribadi saya sesuai dengan :privacy dan :terms.',
+        'consent_privacy_link' => 'Kebijakan Privasi',
+        'consent_terms_link' => 'Syarat & Ketentuan',
         'submit' => 'Kirim Brief Proyek',
         'submitting' => 'Mengirim brief…',
         'success_title' => 'Brief Proyek Berhasil Dikirim',
@@ -175,6 +180,7 @@ return [
             'disposable_email' => 'Gunakan alamat email bisnis atau pribadi yang permanen (domain email sementara tidak diizinkan).',
             'rate_limited' => 'Terlalu banyak pengiriman dari jaringan Anda. Silakan coba kembali dalam beberapa saat.',
             'captcha_failed' => 'Verifikasi keamanan CAPTCHA gagal. Silakan muat ulang dan coba lagi.',
+            'email_unavailable' => 'Alamat email ini tidak dapat dipakai untuk pengajuan baru. Gunakan email lain atau hubungi kami langsung.',
             'duplicate_lead' => 'Email atau nomor WhatsApp ini masih memiliki pengajuan proyek yang sedang diproses. Silakan masuk ke Client Portal untuk melanjutkan negosiasi.',
         ],
     ],

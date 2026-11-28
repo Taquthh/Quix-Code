@@ -8,12 +8,66 @@ use App\Http\Middleware\SetLocale;
 use App\Models\CaseStudy;
 use App\Support\Money;
 use App\Support\PublicCurrencyEstimator;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 /** Pengendali halaman etalase publik bilingual (/id dan /en) beserta metadata SEO (T6-01, T6-03, T6-05, T6-08). */
 class PublicPageController extends Controller
 {
+    /** "/" mengarah ke bahasa yang sesuai: akun > cookie > Accept-Language > default (T6-05). */
+    public function root(Request $request): RedirectResponse
+    {
+        $candidates = [
+            $request->user()?->getRawOriginal('locale'),
+            $request->cookie('locale'),
+            $this->languageFromHeader((string) $request->headers->get('Accept-Language', '')),
+            config('app.locale'),
+        ];
+
+        $locale = 'id';
+        foreach ($candidates as $candidate) {
+            if (is_string($candidate) && in_array($candidate, SetLocale::SUPPORTED, true)) {
+                $locale = $candidate;
+                break;
+            }
+        }
+
+        return redirect('/'.$locale, 302)->header('Vary', 'Accept-Language, Cookie');
+    }
+
+    /** Ambil bahasa pertama yang didukung dari header Accept-Language mentah (urut sesuai q-value). */
+    private function languageFromHeader(string $header): ?string
+    {
+        $weighted = [];
+
+        foreach (explode(',', $header) as $position => $part) {
+            $segments = explode(';', trim($part));
+            $tag = strtolower(trim($segments[0]));
+            $quality = 1.0;
+
+            foreach (array_slice($segments, 1) as $param) {
+                if (preg_match('/^\s*q\s*=\s*([0-9.]+)\s*$/i', $param, $m) === 1) {
+                    $quality = (float) $m[1];
+                }
+            }
+
+            $primary = explode('-', $tag)[0];
+
+            if ($quality > 0 && in_array($primary, SetLocale::SUPPORTED, true)) {
+                $weighted[] = [$quality, -$position, $primary];
+            }
+        }
+
+        if ($weighted === []) {
+            return null;
+        }
+
+        rsort($weighted);
+
+        return $weighted[0][2];
+    }
+
     public function home(Request $request, ?string $locale = null): View
     {
         $activeLocale = $this->resolveLocale($locale);

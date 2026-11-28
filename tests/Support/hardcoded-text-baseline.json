@@ -1,0 +1,15 @@
+{
+    "components/locale-switcher.blade.php": 2,
+    "components/passkey-registration.blade.php": 3,
+    "components/passkey-verify.blade.php": 4,
+    "errors/404.blade.php": 1,
+    "errors/500.blade.php": 1,
+    "errors/503.blade.php": 1,
+    "errors/page.blade.php": 3,
+    "layouts/public.blade.php": 3,
+    "livewire/admin/billing/index.blade.php": 1,
+    "livewire/public/start-project.blade.php": 1,
+    "livewire/settings/delete-user-form.blade.php": 1,
+    "livewire/settings/security.blade.php": 3,
+    "portal/help.blade.php": 1
+}

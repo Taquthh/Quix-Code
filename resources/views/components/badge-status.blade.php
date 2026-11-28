@@ -19,10 +19,19 @@
         'danger' => 'bg-rose-50 text-rose-800 ring-rose-200 dark:bg-rose-500/15 dark:text-rose-300 dark:ring-rose-500/30',
     ][$tone];
 
+    $dotClasses = [
+        'neutral' => 'bg-slate-400 dark:bg-slate-400',
+        'info' => 'bg-sky-500 dark:bg-sky-400',
+        'warning' => 'bg-amber-500 dark:bg-amber-400',
+        'success' => 'bg-emerald-500 dark:bg-emerald-400',
+        'danger' => 'bg-rose-500 dark:bg-rose-400',
+    ][$tone];
+
     $text = $label
         ?? (($status instanceof \BackedEnum && method_exists($status, 'label')) ? $status->label() : \Illuminate\Support\Str::headline($value));
 @endphp
 
-<span {{ $attributes->class(['inline-flex items-center whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset', $classes]) }}>
-    {{ $text }}
+<span title="{{ $text }}" {{ $attributes->class(['inline-flex max-w-full items-center whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset', $classes]) }}>
+    <span aria-hidden="true" class="me-1.5 size-1.5 shrink-0 rounded-full {{ $dotClasses }}"></span>
+    <span class="min-w-0 truncate">{{ $text }}</span>
 </span>

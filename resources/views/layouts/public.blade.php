@@ -1,6 +1,8 @@
 @props([
     'locale' => app()->getLocale(),
     'seo' => [],
+    'simple' => false,
+    'captcha' => false,
 ])
 @php
     $activeLocale = in_array($locale, ['id', 'en'], true) ? $locale : 'id';
@@ -13,7 +15,12 @@
         'x-default' => url('/id'),
     ];
     $ogLocale = $seo['og_locale'] ?? ($activeLocale === 'en' ? 'en_US' : 'id_ID');
-    $selectedCurrency = \App\Support\PublicCurrencyEstimator::selectedCurrency();
+    // Halaman error (simple) tidak menyentuh sesi/DB agar tetap tampil saat sistem bermasalah.
+    $selectedCurrency = $simple ? \App\Enums\Currency::IDR : \App\Support\PublicCurrencyEstimator::selectedCurrency();
+    $ogImage = $seo['image'] ?? url('/og-default.png');
+    $captchaSiteKey = $captcha && config('services.captcha.driver') === 'turnstile' && filled(config('services.captcha.secret_key'))
+        ? (string) config('services.captcha.site_key')
+        : '';
     $analyticsProvider = (string) config('services.analytics.provider', 'none');
     $analyticsDomain = (string) config('services.analytics.domain', '');
     $analyticsScript = (string) config('services.analytics.script_url', '');
@@ -37,6 +44,10 @@
     <meta property="og:description" content="{{ $description }}" />
     <meta property="og:url" content="{{ $canonical }}" />
     <meta property="og:locale" content="{{ $ogLocale }}" />
+    <meta property="og:image" content="{{ $ogImage }}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:image" content="{{ $ogImage }}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{{ $title }}" />
     <meta name="twitter:description" content="{{ $description }}" />
@@ -45,11 +56,12 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.bunny.net/css?family=outfit:600,700|plus-jakarta-sans:400,500,600,700&display=swap" />
-    <link href="https://fonts.bunny.net/css?family=outfit:600,700|plus-jakarta-sans:400,500,600,700&display=swap" rel="stylesheet" />
-
+    {{-- Font Outfit + Plus Jakarta Sans dimuat lokal lewat @fontsource-variable di resources/css/app.css (T0-03, tanpa CDN). --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    @if ($captchaSiteKey !== '')
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+    @endif
 
     @if ($analyticsProvider === 'plausible' && $analyticsDomain !== '' && $analyticsScript !== '')
         <script defer data-domain="{{ $analyticsDomain }}" src="{{ $analyticsScript }}"></script>
@@ -60,20 +72,43 @@
     <script type="application/ld+json">
         {!! json_encode([
             '@context' => 'https://schema.org',
-            '@type' => 'ProfessionalService',
-            'name' => 'Quix Code',
-            'url' => url('/'.$activeLocale),
-            'description' => $description,
-            'availableLanguage' => ['Indonesian', 'English'],
-            'areaServed' => 'Global',
+            '@graph' => [
+                [
+                    '@type' => 'ProfessionalService',
+                    '@id' => url('/').'#organization',
+                    'name' => 'Quix Code',
+                    'url' => url('/'.$activeLocale),
+                    'logo' => url('/apple-touch-icon.png'),
+                    'image' => $ogImage,
+                    'description' => $description,
+                    'availableLanguage' => ['Indonesian', 'English'],
+                    'areaServed' => 'Global',
+                ],
+                [
+                    '@type' => 'WebSite',
+                    '@id' => url('/').'#website',
+                    'name' => 'Quix Code',
+                    'url' => url('/'.$activeLocale),
+                    'inLanguage' => $activeLocale,
+                    'publisher' => ['@id' => url('/').'#organization'],
+                ],
+                [
+                    '@type' => 'WebPage',
+                    'url' => $canonical,
+                    'name' => $title,
+                    'description' => $description,
+                    'inLanguage' => $activeLocale,
+                    'isPartOf' => ['@id' => url('/').'#website'],
+                ],
+            ],
         ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
     </script>
 </head>
-<body class="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-emerald-600 selection:text-white" x-data="{ mobileMenu: false }">
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-emerald-700 selection:text-white" x-data="{ mobileMenu: false }">
     <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-slate-950/95 text-slate-100 backdrop-blur">
         <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
             <a href="{{ route('public.home', ['locale' => $activeLocale]) }}" class="flex items-center gap-2.5 font-heading text-lg font-bold tracking-tight text-white">
-                <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-sm font-bold text-white">QC</span>
+                <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-700 text-sm font-bold text-white">QC</span>
                 <span>Quix Code</span>
             </a>
 
@@ -85,12 +120,13 @@
             </nav>
 
             <div class="hidden items-center gap-2.5 md:flex">
+                @unless ($simple)
                 {{-- Pemilih mata uang estimasi (T6-03) --}}
                 <div class="inline-flex rounded-lg border border-slate-800 bg-slate-900 p-0.5 text-xs">
                     @foreach (['IDR', 'USD'] as $curr)
                         <form method="POST" action="{{ route('public.currency', $curr) }}">
                             @csrf
-                            <button type="submit" class="min-h-8 rounded-md px-2.5 py-1 font-medium transition {{ $selectedCurrency->value === $curr ? 'bg-emerald-600 text-white' : 'text-slate-300 hover:text-white' }}">
+                            <button type="submit" class="min-h-8 rounded-md px-2.5 py-1 font-medium transition {{ $selectedCurrency->value === $curr ? 'bg-emerald-700 text-white' : 'text-slate-300 hover:text-white' }}">
                                 {{ $curr }}
                             </button>
                         </form>
@@ -118,25 +154,27 @@
                         {{ __('public.nav.login') }}
                     </a>
                 @endauth
+                @endunless
 
-                <a href="{{ route('public.start-project', ['locale' => $activeLocale]) }}" class="inline-flex min-h-11 items-center rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-500">
+                <a href="{{ route('public.start-project', ['locale' => $activeLocale]) }}" class="inline-flex min-h-11 items-center rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-800">
                     {{ __('public.nav.start_project') }}
                 </a>
             </div>
 
-            <button type="button" @click="mobileMenu = !mobileMenu" class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-slate-800 text-slate-200 md:hidden" aria-label="Menu">
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <button type="button" @click="mobileMenu = !mobileMenu" :aria-expanded="mobileMenu" aria-controls="public-mobile-menu" class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-slate-200 transition hover:bg-white/[0.08] md:hidden" aria-label="{{ __('public.nav.aria') }}">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
         </div>
 
-        <div x-show="mobileMenu" x-cloak class="border-t border-slate-800 bg-slate-950 px-4 py-4 md:hidden">
+        <div id="public-mobile-menu" x-show="mobileMenu" x-cloak class="border-t border-white/10 bg-slate-950 px-4 py-4 md:hidden">
             <div class="flex flex-col gap-3 text-sm">
                 <a href="{{ route('public.services', ['locale' => $activeLocale]) }}" class="py-1.5 text-slate-200">{{ __('public.nav.services') }}</a>
                 <a href="{{ route('public.works', ['locale' => $activeLocale]) }}" class="py-1.5 text-slate-200">{{ __('public.nav.works') }}</a>
                 <a href="{{ route('public.about', ['locale' => $activeLocale]) }}" class="py-1.5 text-slate-200">{{ __('public.nav.about') }}</a>
                 <a href="{{ route('public.faq', ['locale' => $activeLocale]) }}" class="py-1.5 text-slate-200">{{ __('public.nav.faq') }}</a>
+                @unless ($simple)
                 <div class="flex flex-wrap items-center gap-2 pt-2">
                     @foreach (['id' => 'ID', 'en' => 'EN'] as $code => $label)
                         <form method="POST" action="{{ route('locale.update', $code) }}">
@@ -149,13 +187,14 @@
                     @foreach (['IDR', 'USD'] as $curr)
                         <form method="POST" action="{{ route('public.currency', $curr) }}">
                             @csrf
-                            <button type="submit" class="min-h-10 rounded-md border border-slate-700 px-3 py-1.5 text-xs font-medium {{ $selectedCurrency->value === $curr ? 'bg-emerald-600 text-white' : 'text-slate-300' }}">
+                            <button type="submit" class="min-h-10 rounded-md border border-slate-700 px-3 py-1.5 text-xs font-medium {{ $selectedCurrency->value === $curr ? 'bg-emerald-700 text-white' : 'text-slate-300' }}">
                                 {{ $curr }}
                             </button>
                         </form>
                     @endforeach
                 </div>
-                <a href="{{ route('public.start-project', ['locale' => $activeLocale]) }}" class="mt-2 inline-flex min-h-11 items-center justify-center rounded-lg bg-emerald-600 px-4 py-2.5 font-semibold text-white">
+                @endunless
+                <a href="{{ route('public.start-project', ['locale' => $activeLocale]) }}" class="mt-2 inline-flex min-h-11 items-center justify-center rounded-lg bg-emerald-700 px-4 py-2.5 font-semibold text-white">
                     {{ __('public.nav.start_project') }}
                 </a>
             </div>
@@ -170,7 +209,7 @@
         <div class="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
             <div>
                 <div class="flex items-center gap-2.5 font-heading text-lg font-bold text-white">
-                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-sm font-bold text-white">QC</span>
+                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-700 text-sm font-bold text-white">QC</span>
                     <span>Quix Code</span>
                 </div>
                 <p class="mt-3 text-sm leading-relaxed text-slate-400">{{ __('public.footer.tagline') }}</p>

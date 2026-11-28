@@ -7,13 +7,13 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-slate-100 text-slate-800 dark:bg-midnight dark:text-slate-200">
+    <body class="min-h-screen bg-slate-100 text-slate-800 dark:bg-midnight dark:text-slate-200" data-admin-shell>
         @php($navItems = \App\Support\Navigation::sidebarFor(auth()->user()))
 
-        <flux:sidebar sticky collapsible="mobile" class="border-e border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
-            <flux:sidebar.header>
-                <a href="{{ route('admin.dashboard') }}" wire:navigate class="flex items-center gap-2">
-                    <span class="flex size-8 items-center justify-center rounded-md bg-growth font-heading text-lg font-bold text-white">Q</span>
+        <flux:sidebar sticky collapsible="mobile" class="border-e border-slate-200/80 bg-white/95 shadow-[4px_0_24px_rgb(15_23_42_/_0.03)] backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/95 dark:shadow-none">
+            <flux:sidebar.header class="px-3 pb-5 pt-4">
+                <a href="{{ route('admin.dashboard') }}" wire:navigate class="flex items-center gap-3">
+                    <span aria-hidden="true" class="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 font-heading text-lg font-bold text-white shadow-lg shadow-emerald-950/15">Q</span>
                     <span class="font-heading text-base font-semibold text-slate-900 dark:text-slate-50">{{ config('app.name') }}</span>
                 </a>
                 <flux:sidebar.collapse class="lg:hidden" />

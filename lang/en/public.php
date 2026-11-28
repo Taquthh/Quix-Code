@@ -108,6 +108,8 @@ return [
     'about' => [
         'title' => 'About Quix Code',
         'subtitle' => 'A software engineering studio pairing disciplined backend architecture with transparent client collaboration.',
+        'team_title' => 'The Team',
+        'team_subtitle' => 'The people who design, build, and hand over your project.',
         'story_title' => 'Replacing Guesswork with Measurable Delivery',
         'story_body' => 'Quix Code was built to eliminate black-box software development. Every client receives dedicated Client Portal access to review itemized quotations, watch real progress sync from the main Git branch, log structured revision tickets, and receive full handover archives upon completion.',
         'values' => [
@@ -180,6 +182,7 @@ return [
         'rate_limited' => 'Too many submissions from your network. Please try again later.',
             'captcha_failed' => 'CAPTCHA security verification failed. Please reload and try again.',
             'duplicate_lead' => 'This email or WhatsApp number already has an open project inquiry. Please log in to the Client Portal to continue.',
+            'email_unavailable' => 'This email address cannot be used for a new inquiry. Please use a different email or contact us directly.',
         ],
     ],
 

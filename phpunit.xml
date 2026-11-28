@@ -32,6 +32,12 @@
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
+        <env name="CAPTCHA_DRIVER" value="turnstile"/>
+        <env name="CAPTCHA_SECRET_KEY" value="1x00000000000000000000AA"/>
+        <env name="CAPTCHA_SITE_KEY" value="1x0000000000000000000000000000000AA"/>
+        <env name="EXCHANGE_RATE_API_URL" value="https://api.exchangerate.host/live?access_key=fe33aeeb86f7bf5ff2363e4493541c89&amp;source=USD&amp;currencies=IDR"/>
+        <env name="EXCHANGE_RATE_API_KEY" value="fe33aeeb86f7bf5ff2363e4493541c89"/>
+        <env name="ANALYTICS_PROVIDER" value="plausible"/>
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>

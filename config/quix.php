@@ -81,6 +81,13 @@ return [
         'default_idr_per_usd' => (float) env('QUIX_DEFAULT_IDR_PER_USD', 16200),
     ],
 
+    /*
+     * Anggota tim untuk halaman Tentang (T6-01, T6-10). Diisi pemilik sebelum rilis, contoh:
+     * ['name' => 'Nama', 'role' => ['id' => 'Pendiri & Engineer', 'en' => 'Founder & Engineer'], 'bio' => ['id' => '...', 'en' => '...']].
+     * Bila kosong, bagian Tim tidak ditampilkan (bukan placeholder).
+     */
+    'team' => [],
+
     /* Kepatuhan UU PDP & dokumen legal publik (T6-08). */
     'legal' => [
         'terms_version' => env('QUIX_TERMS_VERSION', '2026.1'),

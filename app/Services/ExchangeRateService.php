@@ -16,6 +16,10 @@ use Throwable;
  */
 class ExchangeRateService
 {
+    private const MIN_IDR_PER_USD = 1_000.0;
+
+    private const MAX_IDR_PER_USD = 100_000.0;
+
     public function __construct(private readonly OpsAlerts $alerts) {}
 
     /**
@@ -52,22 +56,55 @@ class ExchangeRateService
                 return null;
             }
 
-            $idrPerUsd = data_get($data, 'idr_per_usd');
+            $idrPerUsd = $this->extractIdrPerUsd($data);
 
-            if (is_numeric($idrPerUsd) && (float) $idrPerUsd > 0) {
-                return $this->storeIdrPerUsd((float) $idrPerUsd);
+            if ($idrPerUsd === null) {
+                Log::warning('Respons API kurs tidak dikenali atau di luar batas wajar.');
+
+                return null;
             }
 
-            $usdPerIdr = data_get($data, 'rates.USD');
-
-            if (is_numeric($usdPerIdr) && (float) $usdPerIdr > 0) {
-                return $this->storeIdrPerUsd(1 / (float) $usdPerIdr);
-            }
+            return $this->storeIdrPerUsd($idrPerUsd);
         } catch (Throwable $e) {
             Log::warning('Pembaruan kurs melempar pengecualian.', ['exception' => $e::class]);
         }
 
         return null;
+    }
+
+    /**
+     * Normalisasi berbagai bentuk respons penyedia menjadi "IDR per 1 USD", lalu tolak nilai tak wajar
+     * agar kurs salah (mis. basis EUR) tidak tersimpan diam-diam.
+     *
+     * Bentuk yang didukung: {"idr_per_usd": n}, {"rates": {"USD": n}} (basis IDR, mis. open.er-api.com),
+     * {"conversion_rates": {"USD": n}} (basis IDR, exchangerate-api.com), {"quotes": {"USDIDR": n}} (exchangerate.host).
+     *
+     * @param  array<mixed>  $data
+     */
+    private function extractIdrPerUsd(array $data): ?float
+    {
+        $candidate = null;
+
+        if (is_numeric($direct = data_get($data, 'idr_per_usd'))) {
+            $candidate = (float) $direct;
+        } elseif (is_numeric($quote = data_get($data, 'quotes.USDIDR'))) {
+            $candidate = (float) $quote;
+        } else {
+            foreach (['rates.USD', 'conversion_rates.USD'] as $path) {
+                $usdPerIdr = data_get($data, $path);
+
+                if (is_numeric($usdPerIdr) && (float) $usdPerIdr > 0) {
+                    $candidate = 1 / (float) $usdPerIdr;
+                    break;
+                }
+            }
+        }
+
+        if ($candidate === null || $candidate < self::MIN_IDR_PER_USD || $candidate > self::MAX_IDR_PER_USD) {
+            return null;
+        }
+
+        return $candidate;
     }
 
     /** Simpan kurs dua arah (IDR -> USD dan USD -> IDR) secara atomik. */

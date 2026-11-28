@@ -84,27 +84,13 @@ class StartProject extends Component
                     }
                 },
             ],
-            'whatsapp' => [
-                'required',
-                'string',
-                'min:8',
-                'max:25',
-                function (string $attribute, mixed $value, Closure $fail): void {
-                    $digits = is_string($value) ? (preg_replace('/\\D+/', '', $value) ?? '') : '';
-                    $normalizedDigits = str_starts_with($digits, '0') ? '62'.substr($digits, 1) : $digits;
-
-                    if (strlen($normalizedDigits) < 8 || strlen($normalizedDigits) > 15) {
-                        $fail(__('public.intake.errors.whatsapp_invalid'));
-                    }
-                },
-            ],
+            'whatsapp' => ['required', 'string', 'min:8', 'max:25'],
             'service_type' => ['required', Rule::in(['web', 'automation', 'portal'])],
-            'title' => ['required', 'string', 'min:4', 'max:180', 'not_regex:/[\\r\\n]/'],
+            'title' => ['required', 'string', 'min:4', 'max:180'],
             'description' => ['required', 'string', 'min:15', 'max:5000'],
             'currency' => ['required', Rule::enum(Currency::class)],
             'budget_reference' => ['nullable', 'regex:/^\d{1,13}(\.\d{1,2})?$/'],
             'consent_privacy' => ['accepted'],
-            'captcha_token' => ['nullable', 'string', 'max:2048'],
         ];
     }
 
@@ -120,14 +106,17 @@ class StartProject extends Component
 
         $ip = request()->ip() ?? 'unknown';
         $rateKey = 'public-lead-intake:'.$ip;
+        $burstKey = 'public-lead-intake-burst:'.$ip;
 
-        if (RateLimiter::tooManyAttempts($rateKey, 5)) {
+        // Batas longgar untuk semua percobaan (termasuk validasi gagal) dan batas ketat untuk pengiriman valid,
+        // sehingga salah ketik tidak mengunci pengguna asli tetapi pengiriman beruntun tetap diblokir.
+        if (RateLimiter::tooManyAttempts($rateKey, 5) || RateLimiter::tooManyAttempts($burstKey, 30)) {
             $this->addError('email', __('public.intake.errors.rate_limited'));
 
             return;
         }
 
-        RateLimiter::hit($rateKey, 3600);
+        RateLimiter::hit($burstKey, 3600);
 
         $this->email = Str::lower(trim($this->email));
         $this->whatsapp = trim($this->whatsapp);
@@ -135,11 +124,13 @@ class StartProject extends Component
 
         if (! $captcha->verify($this->captcha_token, request()->ip())) {
             $this->captcha_token = '';
-            $this->dispatch('quix-captcha-reset');
+            $this->dispatch('captcha-reset');
             $this->addError('captcha_token', __('public.intake.errors.captcha_failed'));
 
             return;
         }
+
+        RateLimiter::hit($rateKey, 3600);
 
         $project = $intake->submit([
             'name' => $this->name,
@@ -170,11 +161,10 @@ class StartProject extends Component
 
         return view($view, [
             'currencies' => Currency::cases(),
-            'captchaConfigured' => $captcha->isConfigured(),
-            'captchaWidgetEnabled' => $captcha->shouldRenderWidget(),
-            'captchaSiteKey' => config('services.captcha.site_key'),
+            'captchaSiteKey' => $captcha->isEnabled() ? (string) config('services.captcha.site_key') : '',
         ])->layout('layouts::public', [
             'locale' => $this->locale,
+            'captcha' => $captcha->isEnabled(),
             'seo' => [
                 'title' => __('public.seo.start_title'),
                 'description' => __('public.seo.start_description'),

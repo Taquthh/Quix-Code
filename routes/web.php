@@ -42,9 +42,9 @@ use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 // Etalase publik default (ID) & SEO sitemap (Tahap 6).
-Route::get('/', [PublicPageController::class, 'home'])->name('home');
-Route::get('robots.txt', RobotsController::class)->name('robots');
+Route::get('/', [PublicPageController::class, 'root'])->name('home');
 Route::get('sitemap.xml', SitemapController::class)->name('sitemap');
+Route::get('robots.txt', RobotsController::class)->name('robots');
 Route::post('public/currency/{currency}', PublicCurrencyController::class)->name('public.currency');
 
 // Etalase publik bilingual berprefiks /id dan /en (T6-01 s.d. T6-10).

@@ -33,6 +33,36 @@ class Index extends Component
         Gate::authorize('admin');
     }
 
+    /**
+     * Ringkasan sumber lead terbaik (T6-07): jumlah proyek per utm_source + utm_campaign.
+     *
+     * @return list<array{source: string, campaign: string, count: int}>
+     */
+    private function utmSummary(): array
+    {
+        $groups = [];
+
+        Project::query()
+            ->where('lead_source', 'website')
+            ->select(['id', 'utm'])
+            ->latest('created_at')
+            ->limit(2000)
+            ->get()
+            ->each(function (Project $project) use (&$groups): void {
+                $utm = (array) $project->utm;
+                $source = (string) ($utm['utm_source'] ?? '');
+                $campaign = (string) ($utm['utm_campaign'] ?? '');
+                $key = $source.'|'.$campaign;
+                $groups[$key] ??= ['source' => $source, 'campaign' => $campaign, 'count' => 0];
+                $groups[$key]['count']++;
+            });
+
+        $rows = array_values($groups);
+        usort($rows, fn (array $a, array $b): int => $b['count'] <=> $a['count']);
+
+        return array_slice($rows, 0, 5);
+    }
+
     public function render(): View
     {
         Gate::authorize('admin');
@@ -50,6 +80,7 @@ class Index extends Component
 
         return view('livewire.admin.leads.index', [
             'leads' => $leads,
+            'utmSummary' => $this->utmSummary(),
             'statuses' => self::PIPELINE,
         ])->title(__('quotations.leads.title'));
     }

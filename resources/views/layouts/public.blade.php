@@ -1,28 +1,26 @@
 @props([
     'locale' => app()->getLocale(),
     'seo' => [],
+    'simple' => false,
+    'captcha' => false,
 ])
 @php
     $activeLocale = in_array($locale, ['id', 'en'], true) ? $locale : 'id';
     $title = $seo['title'] ?? 'Quix Code — Integrated Software Agency & Client Portal';
     $description = $seo['description'] ?? __('public.seo.home_description');
-    $siteBaseUrl = rtrim((string) config('app.url'), '/');
-    $canonicalCandidate = $seo['canonical'] ?? url()->current();
-    $canonicalPath = parse_url($canonicalCandidate, PHP_URL_PATH);
-    $canonical = $siteBaseUrl.(is_string($canonicalPath) && $canonicalPath !== '' ? $canonicalPath : '/');
+    $canonical = $seo['canonical'] ?? url()->current();
     $alternates = $seo['alternates'] ?? [
         'id' => url('/id'),
         'en' => url('/en'),
         'x-default' => url('/id'),
     ];
-    $alternates = array_map(static function (string $href) use ($siteBaseUrl): string {
-        $path = parse_url($href, PHP_URL_PATH);
-
-        return $siteBaseUrl.(is_string($path) && $path !== '' ? $path : '/');
-    }, $alternates);
-    $ogImage = $seo['image'] ?? $siteBaseUrl.'/og-image.png';
     $ogLocale = $seo['og_locale'] ?? ($activeLocale === 'en' ? 'en_US' : 'id_ID');
-    $selectedCurrency = \App\Support\PublicCurrencyEstimator::selectedCurrency();
+    // Halaman error (simple) tidak menyentuh sesi/DB agar tetap tampil saat sistem bermasalah.
+    $selectedCurrency = $simple ? \App\Enums\Currency::IDR : \App\Support\PublicCurrencyEstimator::selectedCurrency();
+    $ogImage = $seo['image'] ?? url('/og-default.png');
+    $captchaSiteKey = $captcha && config('services.captcha.driver') === 'turnstile' && filled(config('services.captcha.secret_key'))
+        ? (string) config('services.captcha.site_key')
+        : '';
     $analyticsProvider = (string) config('services.analytics.provider', 'none');
     $analyticsDomain = (string) config('services.analytics.domain', '');
     $analyticsScript = (string) config('services.analytics.script_url', '');
@@ -45,13 +43,14 @@
     <meta property="og:title" content="{{ $title }}" />
     <meta property="og:description" content="{{ $description }}" />
     <meta property="og:url" content="{{ $canonical }}" />
-    <meta property="og:image" content="{{ $ogImage }}" />
-    <meta property="og:image:alt" content="Quix Code — software engineering studio" />
     <meta property="og:locale" content="{{ $ogLocale }}" />
+    <meta property="og:image" content="{{ $ogImage }}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:image" content="{{ $ogImage }}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{{ $title }}" />
     <meta name="twitter:description" content="{{ $description }}" />
-    <meta name="twitter:image" content="{{ $ogImage }}" />
 
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -63,6 +62,10 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    @if ($captchaSiteKey !== '')
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+    @endif
+
     @if ($analyticsProvider === 'plausible' && $analyticsDomain !== '' && $analyticsScript !== '')
         <script defer data-domain="{{ $analyticsDomain }}" src="{{ $analyticsScript }}"></script>
     @elseif ($analyticsProvider === 'umami' && $analyticsDomain !== '' && $analyticsScript !== '')
@@ -72,13 +75,36 @@
     <script type="application/ld+json">
         {!! json_encode([
             '@context' => 'https://schema.org',
-            '@type' => 'ProfessionalService',
-            'name' => 'Quix Code',
-            'url' => $siteBaseUrl.'/'.$activeLocale,
-            'description' => $description,
-            'availableLanguage' => ['Indonesian', 'English'],
-            'areaServed' => 'Global',
-        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_INVALID_UTF8_SUBSTITUTE) !!}
+            '@graph' => [
+                [
+                    '@type' => 'ProfessionalService',
+                    '@id' => url('/').'#organization',
+                    'name' => 'Quix Code',
+                    'url' => url('/'.$activeLocale),
+                    'logo' => url('/apple-touch-icon.png'),
+                    'image' => $ogImage,
+                    'description' => $description,
+                    'availableLanguage' => ['Indonesian', 'English'],
+                    'areaServed' => 'Global',
+                ],
+                [
+                    '@type' => 'WebSite',
+                    '@id' => url('/').'#website',
+                    'name' => 'Quix Code',
+                    'url' => url('/'.$activeLocale),
+                    'inLanguage' => $activeLocale,
+                    'publisher' => ['@id' => url('/').'#organization'],
+                ],
+                [
+                    '@type' => 'WebPage',
+                    'url' => $canonical,
+                    'name' => $title,
+                    'description' => $description,
+                    'inLanguage' => $activeLocale,
+                    'isPartOf' => ['@id' => url('/').'#website'],
+                ],
+            ],
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
     </script>
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-emerald-600 selection:text-white" x-data="{ mobileMenu: false }">
@@ -97,6 +123,7 @@
             </nav>
 
             <div class="hidden items-center gap-2.5 md:flex">
+                @unless ($simple)
                 {{-- Pemilih mata uang estimasi (T6-03) --}}
                 <div class="inline-flex rounded-lg border border-slate-800 bg-slate-900 p-0.5 text-xs">
                     @foreach (['IDR', 'USD'] as $curr)
@@ -130,6 +157,7 @@
                         {{ __('public.nav.login') }}
                     </a>
                 @endauth
+                @endunless
 
                 <a href="{{ route('public.start-project', ['locale' => $activeLocale]) }}" class="inline-flex min-h-11 items-center rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-500">
                     {{ __('public.nav.start_project') }}
@@ -149,6 +177,7 @@
                 <a href="{{ route('public.works', ['locale' => $activeLocale]) }}" class="py-1.5 text-slate-200">{{ __('public.nav.works') }}</a>
                 <a href="{{ route('public.about', ['locale' => $activeLocale]) }}" class="py-1.5 text-slate-200">{{ __('public.nav.about') }}</a>
                 <a href="{{ route('public.faq', ['locale' => $activeLocale]) }}" class="py-1.5 text-slate-200">{{ __('public.nav.faq') }}</a>
+                @unless ($simple)
                 <div class="flex flex-wrap items-center gap-2 pt-2">
                     @foreach (['id' => 'ID', 'en' => 'EN'] as $code => $label)
                         <form method="POST" action="{{ route('locale.update', $code) }}">
@@ -167,6 +196,7 @@
                         </form>
                     @endforeach
                 </div>
+                @endunless
                 <a href="{{ route('public.start-project', ['locale' => $activeLocale]) }}" class="mt-2 inline-flex min-h-11 items-center justify-center rounded-lg bg-emerald-600 px-4 py-2.5 font-semibold text-white">
                     {{ __('public.nav.start_project') }}
                 </a>

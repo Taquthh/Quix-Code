@@ -18,6 +18,12 @@ class PublicCurrencyEstimator
     public static function selectedCurrency(?Request $request = null): Currency
     {
         $req = $request ?? request();
+
+        // Halaman 404/500/503 dirender tanpa middleware web, sehingga sesi bisa saja tidak ada.
+        if (! $req->hasSession()) {
+            return Currency::IDR;
+        }
+
         $raw = $req->session()->get(self::SESSION_KEY);
 
         if (is_string($raw)) {

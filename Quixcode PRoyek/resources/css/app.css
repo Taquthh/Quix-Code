@@ -1,0 +1,161 @@
+@import "@fontsource-variable/outfit";
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "tailwindcss";
+@import "../../vendor/livewire/flux/dist/flux.css";
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Design tokens Quix Code ("Clean Tech": Midnight Slate & Pearl Ivory).
+ * Semua warna, radius, dan spasi dipakai lewat token ini agar admin, portal,
+ * dan area publik konsisten.
+ */
+@theme {
+  --font-sans:
+    "Plus Jakarta Sans Variable", "Inter", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-heading:
+    "Outfit Variable", "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 0.75rem;
+  --spacing-card: 1.25rem;
+}
+
+@theme inline {
+  --color-midnight: var(--color-slate-950); /* landing page, admin */
+  --color-ivory: var(--color-slate-50); /* body landing page, portal klien */
+  --color-growth: var(--color-emerald-600); /* CTA utama, progres selesai */
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    font-feature-settings: "cv11", "ss01";
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.025em;
+  }
+
+  :where(a, button, [role="button"], input, select, textarea):focus-visible {
+    outline: 2px solid var(--color-emerald-500);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background-color: var(--color-emerald-200);
+    color: var(--color-slate-950);
+  }
+
+  [x-cloak] {
+    display: none !important;
+  }
+}
+
+@layer components {
+  [data-public-hero]::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px), linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    content: "";
+    mask-image: linear-gradient(to bottom, black, transparent 92%);
+    pointer-events: none;
+  }
+
+  [data-public-hero]::after {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(ellipse at 82% 44%, rgb(16 185 129 / 0.16), transparent 34%), radial-gradient(ellipse at 5% 0%, rgb(59 130 246 / 0.11), transparent 32%);
+    content: "";
+    pointer-events: none;
+  }
+
+  [data-auth-panel] {
+    background-image: radial-gradient(ellipse at 82% 14%, rgb(16 185 129 / 0.2), transparent 30%), radial-gradient(ellipse at 10% 88%, rgb(59 130 246 / 0.12), transparent 38%), linear-gradient(145deg, #0b1726 0%, #0f1e2d 52%, #102b2a 100%);
+  }
+
+  [data-auth-panel]::after {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px), linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+    content: "";
+    mask-image: linear-gradient(to bottom right, black, transparent 78%);
+    pointer-events: none;
+  }
+
+  [data-admin-shell] {
+    background-image: radial-gradient(ellipse at top right, rgb(16 185 129 / 0.06), transparent 38%);
+  }
+
+  [data-portal-layout] {
+    background-image: radial-gradient(ellipse at top right, rgb(16 185 129 / 0.055), transparent 42%);
+  }
+
+  [data-portal-nav="sidebar"] a {
+    transition: color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+  }
+
+  [data-portal-nav="sidebar"] a[aria-current="page"] {
+    box-shadow: inset 3px 0 0 var(--color-emerald-600);
+  }
+
+  [data-portal-nav="bottom"] {
+    backdrop-filter: blur(16px);
+  }
+
+  [data-stat-card] {
+    isolation: isolate;
+  }
+
+  [data-stat-card]::after {
+    position: absolute;
+    z-index: -1;
+    top: -3rem;
+    right: -2rem;
+    width: 9rem;
+    height: 9rem;
+    border-radius: 9999px;
+    background: rgb(16 185 129 / 0.09);
+    content: "";
+    filter: blur(30px);
+    pointer-events: none;
+  }
+
+  .dark [data-stat-card]::after {
+    background: rgb(16 185 129 / 0.13);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

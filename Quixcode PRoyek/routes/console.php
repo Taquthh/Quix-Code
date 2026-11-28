@@ -1,0 +1,42 @@
+<?php
+
+use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
+
+Artisan::command('inspire', function () {
+    $this->comment(Inspiring::quote());
+})->purpose('Display an inspiring quote');
+
+/*
+ * Quotation (T3-06). Zona waktu aplikasi UTC: akhir hari valid_until = 07:00 WIB.
+ * Kedaluwarsa dipindai sesaat sesudah tengah malam UTC, pengingat pukul 08:00 WIB.
+ */
+Schedule::command('quotations:expire')->dailyAt('00:10')->withoutOverlapping();
+Schedule::command('quotations:remind')->dailyAt('01:00')->withoutOverlapping();
+
+/* Digest email chat (T3-09): pesan belum dibaca dirangkum satu email per proyek dan pengirim. */
+Schedule::command('chat:digest')->everyFiveMinutes()->withoutOverlapping();
+
+/*
+ * Rekonsiliasi GitHub (T5-08): menambal commit yang webhook-nya terlewat. Pukul 09:00 WIB (02:00 UTC).
+ */
+Schedule::command('github:reconcile')->dailyAt('02:00')->withoutOverlapping();
+
+/* Pantau antrean (T5-09): memicu peringatan admin bila ada antrean yang menumpuk. */
+Schedule::command('queue:monitor', [
+    collect((array) config('quix.queues'))->map(fn (string $queue) => config('queue.default').':'.$queue)->implode(','),
+    '--max='.(int) config('quix.alerts.queue_max'),
+])->everyFiveMinutes()->withoutOverlapping();
+
+/*
+ * Aturan otomatis (T5-11). Zona waktu aplikasi UTC: 01:30 UTC = 08:30 WIB.
+ * Pengingat invoice lebih dulu, lalu penjedaan DP, sehingga klien menerima peringatan sebelum proyeknya dijeda.
+ */
+Schedule::command('invoices:remind')->dailyAt('01:30')->withoutOverlapping();
+Schedule::command('projects:hold-unpaid-dp')->dailyAt('02:30')->withoutOverlapping();
+Schedule::command('tickets:check-sla')->hourly()->withoutOverlapping();
+Schedule::command('webhooks:purge')->dailyAt('03:15')->withoutOverlapping();
+
+// Kurs estimasi publik (T6-09): perbarui dua kali sehari; perintah ini juga memeriksa kesegaran (> 48 jam) dan memperingatkan admin.
+Schedule::command('rates:update')->twiceDaily(4, 16)->withoutOverlapping();

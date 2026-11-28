@@ -34,14 +34,13 @@ class DisplayCurrency
         }
 
         $scaled = (int) ($m[1].str_pad($m[2] ?? '', 8, '0'));
-        $targetFactor = $target->minorFactor();
 
-        if ($scaled <= 0 || $scaled > intdiv(PHP_INT_MAX, $targetFactor) || $money->amount === PHP_INT_MIN) {
+        if ($scaled <= 0) {
             return null;
         }
 
         $amount = abs($money->amount);
-        $multiplier = $scaled * $targetFactor;
+        $multiplier = $scaled * $target->minorFactor();
 
         if ($amount !== 0 && $amount > intdiv(PHP_INT_MAX, $multiplier)) {
             return null;

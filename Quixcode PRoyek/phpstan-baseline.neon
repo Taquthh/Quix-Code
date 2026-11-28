@@ -1,0 +1,1705 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method App\\Enums\\TicketStatus\:\:kanbanColumns\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Enums/TicketStatus.php
+
+		-
+			message: '#^Parameter \#1 \$output of method App\\Http\\Controllers\\Admin\\CsvExportController\:\:writeRows\(\) expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 3
+			path: app/Http/Controllers/Admin/CsvExportController.php
+
+		-
+			message: '#^Parameter \#1 \$stream of function fclose expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Admin/CsvExportController.php
+
+		-
+			message: '#^Parameter \#1 \$stream of function fwrite expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Admin/CsvExportController.php
+
+		-
+			message: '#^Call to function in_array\(\) with arguments string, array\{App\\Enums\\InvoiceStatus\:\:Sent, App\\Enums\\InvoiceStatus\:\:Unpaid\} and true will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Http/Controllers/Admin/DashboardController.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Controllers/Admin/DashboardController.php
+
+		-
+			message: '#^Cannot call method startOfDay\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Admin/DashboardController.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\InvoiceStatus\:\:AwaitingVerification will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Http/Controllers/Admin/DashboardController.php
+
+		-
+			message: '#^Call to function is_array\(\) with string will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Http/Controllers/InvoicePrintController.php
+
+		-
+			message: '#^Call to function is_array\(\) with string will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Http/Controllers/QuotationPrintController.php
+
+		-
+			message: '#^Method App\\Livewire\\Admin\\Activity\\Index\:\:filterProject\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Livewire/Admin/Activity/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Admin\\Activity\\Index\:\:filterProject\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Livewire/Admin/Activity/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Admin\\Projects\\InvoiceManager\:\:\$invoices\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Admin/Projects/InvoiceManager.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Admin\\Projects\\InvoiceManager\:\:\$project\.$#'
+			identifier: property.notFound
+			count: 8
+			path: app/Livewire/Admin/Projects/InvoiceManager.php
+
+		-
+			message: '#^Call to function abort_unless\(\) with false and 409 will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Livewire/Admin/Projects/InvoiceManager.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Livewire/Admin/Projects/InvoiceManager.php
+
+		-
+			message: '#^Method App\\Livewire\\Admin\\Projects\\InvoiceManager\:\:invoices\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Admin/Projects/InvoiceManager.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 4
+			path: app/Livewire/Admin/Projects/InvoiceManager.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\InvoiceStatus\:\:AwaitingVerification will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Livewire/Admin/Projects/InvoiceManager.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\InvoiceStatus\:\:Draft will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Livewire/Admin/Projects/InvoiceManager.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\InvoiceType\:\:Dp will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 2
+			path: app/Livewire/Admin/Projects/InvoiceManager.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\InvoiceType\:\:Final will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Livewire/Admin/Projects/InvoiceManager.php
+
+		-
+			message: '#^Method App\\Livewire\\Admin\\Projects\\Kanban\:\:reorderTickets\(\) has parameter \$ticketIds with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Livewire/Admin/Projects/Kanban.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\TicketStatus will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Livewire/Admin/Projects/Kanban.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\TicketStatus will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 2
+			path: app/Livewire/Admin/Projects/Kanban.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Admin\\Projects\\Negotiation\:\:\$project\.$#'
+			identifier: property.notFound
+			count: 4
+			path: app/Livewire/Admin/Projects/Negotiation.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Admin\\Projects\\Show\:\:\$project\.$#'
+			identifier: property.notFound
+			count: 14
+			path: app/Livewire/Admin/Projects/Show.php
+
+		-
+			message: '#^Binary operation "\+" between int\|string\|false and 1 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Livewire/Admin/Projects/Show.php
+
+		-
+			message: '#^Binary operation "\-" between int\|string\|false and 1 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Livewire/Admin/Projects/Show.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Livewire/Admin/Projects/Show.php
+
+		-
+			message: '#^Cannot call method label\(\) on null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Livewire/Admin/Projects/Show.php
+
+		-
+			message: '#^Expression on left side of \?\? is always null\.$#'
+			identifier: nullCoalesce.expr
+			count: 2
+			path: app/Livewire/Admin/Projects/Show.php
+
+		-
+			message: '#^Offset ''new'' on string\|null on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/Admin/Projects/Show.php
+
+		-
+			message: '#^Offset ''old'' on string\|null on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/Admin/Projects/Show.php
+
+		-
+			message: '#^Offset ''title'' on string\|null on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/Admin/Projects/Show.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\MilestoneStatus will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Livewire/Admin/Projects/Show.php
+
+		-
+			message: '#^Unable to resolve the template type TConcatValue in call to method Illuminate\\Support\\Collection\<int,App\\Models\\User\>\:\:concat\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: app/Livewire/Admin/Projects/Show.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Admin\\Quotations\\Builder\:\:\$project\.$#'
+			identifier: property.notFound
+			count: 5
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Admin\\Quotations\\Builder\:\:\$quotation\.$#'
+			identifier: property.notFound
+			count: 5
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Admin\\Quotations\\Builder\:\:\$totals\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$description\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$hours\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$rate\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Offset ''hours'' on array\{title\: string, description\: string, hours\: string, rate\: string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Offset ''rate'' on array\{title\: string, description\: string, hours\: string, rate\: string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Parameter \#1 \$array \(list\<array\{title\: string, description\: string, hours\: string, rate\: string\}\>\) of array_values is already a list, call has no effect\.$#'
+			identifier: arrayValues.list
+			count: 1
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Property App\\Livewire\\Admin\\Quotations\\Builder\:\:\$items \(list\<array\{title\: string, description\: string, hours\: string, rate\: string\}\>\) does not accept array\<int, array\{title\: mixed, description\: string, hours\: string, rate\: string\}\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Property App\\Livewire\\Admin\\Quotations\\Builder\:\:\$items \(list\<array\{title\: string, description\: string, hours\: string, rate\: string\}\>\) does not accept array\{array\<string, string\>\}\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Property App\\Livewire\\Admin\\Quotations\\Builder\:\:\$items \(list\<array\{title\: string, description\: string, hours\: string, rate\: string\}\>\) does not accept non\-empty\-array\<int\<0, max\>, array\{title\: string, description\: string, hours\: string, rate\: string\}\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Property App\\Livewire\\Admin\\Quotations\\Builder\:\:\$items \(list\<array\{title\: string, description\: string, hours\: string, rate\: string\}\>\) does not accept non\-empty\-list\<array\<string, string\>\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:all\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Livewire/Admin/Quotations/Builder.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Chat/Room.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Portal\\Negotiation\:\:\$project\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Livewire/Portal/Negotiation.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Portal\\ProjectOverview\:\:\$project\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Livewire/Portal/ProjectOverview.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Portal\\ProjectOverview\:\:\$tickets\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Portal/ProjectOverview.php
+
+		-
+			message: '#^Method App\\Livewire\\Portal\\ProjectOverview\:\:tickets\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Livewire/Portal/ProjectOverview.php
+
+		-
+			message: '#^Method App\\Models\\ActivityLog\:\:subject\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\MorphTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ActivityLog.php
+
+		-
+			message: '#^Method App\\Models\\ActivityLog\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ActivityLog.php
+
+		-
+			message: '#^Class App\\Models\\CaseStudy uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/CaseStudy.php
+
+		-
+			message: '#^Method App\\Models\\CaseStudy\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/CaseStudy.php
+
+		-
+			message: '#^Method App\\Models\\CaseStudy\:\:scopePublished\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/CaseStudy.php
+
+		-
+			message: '#^Method App\\Models\\CaseStudy\:\:scopePublished\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/CaseStudy.php
+
+		-
+			message: '#^Class App\\Models\\ChangeRequest uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ChangeRequest.php
+
+		-
+			message: '#^Method App\\Models\\ChangeRequest\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ChangeRequest.php
+
+		-
+			message: '#^Method App\\Models\\ChangeRequest\:\:quotation\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ChangeRequest.php
+
+		-
+			message: '#^Class App\\Models\\ExchangeRate uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ExchangeRate.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\Invoice\)\>\|static\(App\\Models\\Invoice\)\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Models/Invoice.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\Invoice\)\>\|static\(App\\Models\\Invoice\)\:\:forceFill\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/Invoice.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\Invoice\)\>\|static\(App\\Models\\Invoice\)\:\:getAttributes\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/Invoice.php
+
+		-
+			message: '#^Call to function in_array\(\) with arguments string, array\{App\\Enums\\InvoiceStatus\:\:Sent, App\\Enums\\InvoiceStatus\:\:Unpaid\} and true will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Models/Invoice.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Models/Invoice.php
+
+		-
+			message: '#^Cannot call method isPaid\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Invoice.php
+
+		-
+			message: '#^Cannot call method isPast\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Invoice.php
+
+		-
+			message: '#^Class App\\Models\\Invoice uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Invoice.php
+
+		-
+			message: '#^Method App\\Models\\Invoice\:\:items\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Invoice.php
+
+		-
+			message: '#^Method App\\Models\\Invoice\:\:payments\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Invoice.php
+
+		-
+			message: '#^Method App\\Models\\Invoice\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Invoice.php
+
+		-
+			message: '#^Method App\\Models\\Invoice\:\:scopeVisibleTo\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Invoice.php
+
+		-
+			message: '#^Method App\\Models\\Invoice\:\:scopeVisibleTo\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Invoice.php
+
+		-
+			message: '#^Parameter \#2 \$subject of static method App\\Support\\ActivityLogger\:\:log\(\) expects Illuminate\\Database\\Eloquent\\Model, Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\Invoice\)\>\|static\(App\\Models\\Invoice\) given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Models/Invoice.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: app/Models/Invoice.php
+
+		-
+			message: '#^Class App\\Models\\InvoiceItem uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/InvoiceItem.php
+
+		-
+			message: '#^Method App\\Models\\InvoiceItem\:\:invoice\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/InvoiceItem.php
+
+		-
+			message: '#^Class App\\Models\\MilestoneAcceptance uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MilestoneAcceptance.php
+
+		-
+			message: '#^Method App\\Models\\MilestoneAcceptance\:\:client\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MilestoneAcceptance.php
+
+		-
+			message: '#^Method App\\Models\\MilestoneAcceptance\:\:milestone\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/MilestoneAcceptance.php
+
+		-
+			message: '#^Class App\\Models\\NotificationLog uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/NotificationLog.php
+
+		-
+			message: '#^Method App\\Models\\NotificationLog\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/NotificationLog.php
+
+		-
+			message: '#^Class App\\Models\\NotificationTemplate uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/NotificationTemplate.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\:\:visibleTo\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/OrderChat.php
+
+		-
+			message: '#^Class App\\Models\\OrderChat uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/OrderChat.php
+
+		-
+			message: '#^Method App\\Models\\OrderChat\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/OrderChat.php
+
+		-
+			message: '#^Method App\\Models\\OrderChat\:\:scopeUnreadFor\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/OrderChat.php
+
+		-
+			message: '#^Method App\\Models\\OrderChat\:\:scopeUnreadFor\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/OrderChat.php
+
+		-
+			message: '#^Method App\\Models\\OrderChat\:\:scopeVisibleTo\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/OrderChat.php
+
+		-
+			message: '#^Method App\\Models\\OrderChat\:\:scopeVisibleTo\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/OrderChat.php
+
+		-
+			message: '#^Method App\\Models\\OrderChat\:\:sender\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/OrderChat.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$currency\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Payment.php
+
+		-
+			message: '#^Class App\\Models\\Payment uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Payment.php
+
+		-
+			message: '#^Method App\\Models\\Payment\:\:invoice\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Payment.php
+
+		-
+			message: '#^Method App\\Models\\Payment\:\:verifier\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Payment.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\Project\)\>\|static\(App\\Models\\Project\)\:\:\$cancelled_reason\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\Project\)\>\|static\(App\\Models\\Project\)\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\Project\)\>\|static\(App\\Models\\Project\)\:\:\$on_hold_from\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Models/Project.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\Project\)\>\|static\(App\\Models\\Project\)\:\:\$on_hold_reason\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\Project\)\>\|static\(App\\Models\\Project\)\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Models/Project.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\:\:withoutPrices\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\Project\)\>\|static\(App\\Models\\Project\)\:\:getAttributes\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\Project\)\>\|static\(App\\Models\\Project\)\:\:save\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Class App\\Models\\Project uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:assignments\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:caseStudy\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasOne does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:changeRequests\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:client\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:commits\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:files\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:handover\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasOne does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:invoices\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:latestQuotation\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasOne does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:milestones\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:notes\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:orderChats\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:quotations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:scopeVisibleTo\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:scopeVisibleTo\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:scopeWithoutPrices\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:scopeWithoutPrices\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:staff\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:statusHistories\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:tickets\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:visibleIds\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\Project\:\:webhookDeliveries\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Parameter \#1 \$project of method App\\Models\\Project\:\:assertTransitionPreconditions\(\) expects App\\Models\\Project, Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\Project\)\>\|static\(App\\Models\\Project\) given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Method App\\Models\\ProjectAssignment\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectAssignment.php
+
+		-
+			message: '#^Method App\\Models\\ProjectAssignment\:\:staff\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectAssignment.php
+
+		-
+			message: '#^Class App\\Models\\ProjectFile uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectFile.php
+
+		-
+			message: '#^Method App\\Models\\ProjectFile\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectFile.php
+
+		-
+			message: '#^Method App\\Models\\ProjectFile\:\:uploader\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectFile.php
+
+		-
+			message: '#^Class App\\Models\\ProjectGitCommit uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectGitCommit.php
+
+		-
+			message: '#^Method App\\Models\\ProjectGitCommit\:\:author\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectGitCommit.php
+
+		-
+			message: '#^Method App\\Models\\ProjectGitCommit\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectGitCommit.php
+
+		-
+			message: '#^Cannot call method isPast\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/ProjectHandover.php
+
+		-
+			message: '#^Class App\\Models\\ProjectHandover uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectHandover.php
+
+		-
+			message: '#^Method App\\Models\\ProjectHandover\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectHandover.php
+
+		-
+			message: '#^Class App\\Models\\ProjectMilestone uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectMilestone.php
+
+		-
+			message: '#^Method App\\Models\\ProjectMilestone\:\:acceptances\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectMilestone.php
+
+		-
+			message: '#^Method App\\Models\\ProjectMilestone\:\:assignee\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectMilestone.php
+
+		-
+			message: '#^Method App\\Models\\ProjectMilestone\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectMilestone.php
+
+		-
+			message: '#^Class App\\Models\\ProjectNote uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectNote.php
+
+		-
+			message: '#^Method App\\Models\\ProjectNote\:\:author\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectNote.php
+
+		-
+			message: '#^Method App\\Models\\ProjectNote\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectNote.php
+
+		-
+			message: '#^Class App\\Models\\ProjectStatusHistory uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectStatusHistory.php
+
+		-
+			message: '#^Method App\\Models\\ProjectStatusHistory\:\:actor\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectStatusHistory.php
+
+		-
+			message: '#^Method App\\Models\\ProjectStatusHistory\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ProjectStatusHistory.php
+
+		-
+			message: '#^Call to function is_array\(\) with string\|null will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Models/Quotation.php
+
+		-
+			message: '#^Cannot call method copy\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Models/Quotation.php
+
+		-
+			message: '#^Class App\\Models\\Quotation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Quotation.php
+
+		-
+			message: '#^Method App\\Models\\Quotation\:\:items\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Quotation.php
+
+		-
+			message: '#^Method App\\Models\\Quotation\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Quotation.php
+
+		-
+			message: '#^Method App\\Models\\Quotation\:\:scopeVisibleTo\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Quotation.php
+
+		-
+			message: '#^Method App\\Models\\Quotation\:\:scopeVisibleTo\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Quotation.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 3
+			path: app/Models/Quotation.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\QuotationStatus\:\:Expired will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Models/Quotation.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\QuotationStatus\:\:Sent will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Models/Quotation.php
+
+		-
+			message: '#^Class App\\Models\\QuotationItem uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/QuotationItem.php
+
+		-
+			message: '#^Method App\\Models\\QuotationItem\:\:quotation\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/QuotationItem.php
+
+		-
+			message: '#^Class App\\Models\\RevisionTicket uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/RevisionTicket.php
+
+		-
+			message: '#^Method App\\Models\\RevisionTicket\:\:comments\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/RevisionTicket.php
+
+		-
+			message: '#^Method App\\Models\\RevisionTicket\:\:creator\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/RevisionTicket.php
+
+		-
+			message: '#^Method App\\Models\\RevisionTicket\:\:scopeVisibleTo\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/RevisionTicket.php
+
+		-
+			message: '#^Method App\\Models\\RevisionTicket\:\:scopeVisibleTo\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/RevisionTicket.php
+
+		-
+			message: '#^Class App\\Models\\Setting uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Setting.php
+
+		-
+			message: '#^Method App\\Models\\Setting\:\:updater\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Setting.php
+
+		-
+			message: '#^Class App\\Models\\TicketComment uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/TicketComment.php
+
+		-
+			message: '#^Method App\\Models\\TicketComment\:\:ticket\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/TicketComment.php
+
+		-
+			message: '#^Method App\\Models\\TicketComment\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/TicketComment.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\User\)\>\|static\(App\\Models\\User\)\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\User\)\>\|static\(App\\Models\\User\)\:\:\$is_active\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Models/User.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\User\)\>\|static\(App\\Models\\User\)\:\:assignedProjects\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Models/User.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\User\)\>\|static\(App\\Models\\User\)\:\:getAttributes\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Models/User.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\User\)\>\|static\(App\\Models\\User\)\:\:isStaff\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\User\)\>\|static\(App\\Models\\User\)\:\:save\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Models/User.php
+
+		-
+			message: '#^Class App\\Models\\User uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:assignedProjects\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:consents\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Method App\\Models\\User\:\:projects\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Parameter \#2 \$subject of static method App\\Support\\ActivityLogger\:\:log\(\) expects Illuminate\\Database\\Eloquent\\Model, Illuminate\\Database\\Eloquent\\Collection\<int, static\(App\\Models\\User\)\>\|static\(App\\Models\\User\) given\.$#'
+			identifier: argument.type
+			count: 2
+			path: app/Models/User.php
+
+		-
+			message: '#^Class App\\Models\\UserConsent uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/UserConsent.php
+
+		-
+			message: '#^Method App\\Models\\UserConsent\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/UserConsent.php
+
+		-
+			message: '#^Class App\\Models\\WebhookDelivery uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/WebhookDelivery.php
+
+		-
+			message: '#^Method App\\Models\\WebhookDelivery\:\:project\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/WebhookDelivery.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Notifications/ChatDigestNotification.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Notifications/QuotationExpiringNotification.php
+
+		-
+			message: '#^Cannot call method translatedFormat\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Notifications/QuotationExpiringNotification.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Notifications/QuotationSentNotification.php
+
+		-
+			message: '#^Cannot call method translatedFormat\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Notifications/QuotationSentNotification.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$staff_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Policies/ChatPolicy.php
+
+		-
+			message: '#^Parameter \#2 \$project of method App\\Policies\\ChatPolicy\:\:ownsProject\(\) expects App\\Models\\Project\|null, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Policies/ChatPolicy.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$staff_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Policies/FilePolicy.php
+
+		-
+			message: '#^Result of \|\| is always true\.$#'
+			identifier: booleanOr.alwaysTrue
+			count: 1
+			path: app/Policies/FilePolicy.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\FileVisibility\:\:Client will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Policies/FilePolicy.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\FileVisibility\:\:Public will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Policies/FilePolicy.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Policies/FilePolicy.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$staff_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Policies/InvoicePolicy.php
+
+		-
+			message: '#^Call to function in_array\(\) with arguments string, array\{App\\Enums\\InvoiceStatus\:\:Paid, App\\Enums\\InvoiceStatus\:\:Cancelled, App\\Enums\\InvoiceStatus\:\:Void\} and true will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Policies/InvoicePolicy.php
+
+		-
+			message: '#^Cannot call method acceptsPayment\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Policies/InvoicePolicy.php
+
+		-
+			message: '#^Parameter \#2 \$project of method App\\Policies\\InvoicePolicy\:\:ownsProject\(\) expects App\\Models\\Project\|null, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 2
+			path: app/Policies/InvoicePolicy.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: app/Policies/InvoicePolicy.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\InvoiceStatus\:\:Draft will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Policies/InvoicePolicy.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\InvoiceStatus\:\:Draft will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Policies/InvoicePolicy.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$staff_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Policies/MilestonePolicy.php
+
+		-
+			message: '#^Parameter \#2 \$project of method App\\Policies\\MilestonePolicy\:\:canAccessProject\(\) expects App\\Models\\Project\|null, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Policies/MilestonePolicy.php
+
+		-
+			message: '#^Parameter \#2 \$project of method App\\Policies\\MilestonePolicy\:\:isAssigned\(\) expects App\\Models\\Project\|null, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Policies/MilestonePolicy.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$project\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Policies/PaymentPolicy.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$staff_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Policies/PaymentPolicy.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: app/Policies/PaymentPolicy.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\PaymentStatus\:\:Pending will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Policies/PaymentPolicy.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$staff_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Policies/ProjectPolicy.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$staff_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Policies/QuotationPolicy.php
+
+		-
+			message: '#^Parameter \#2 \$project of method App\\Policies\\QuotationPolicy\:\:ownsProject\(\) expects App\\Models\\Project\|null, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 2
+			path: app/Policies/QuotationPolicy.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 2
+			path: app/Policies/QuotationPolicy.php
+
+		-
+			message: '#^Result of \|\| is always true\.$#'
+			identifier: booleanOr.alwaysTrue
+			count: 1
+			path: app/Policies/QuotationPolicy.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\QuotationStatus\:\:Draft will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Policies/QuotationPolicy.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\QuotationStatus\:\:Sent will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Policies/QuotationPolicy.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\QuotationStatus\:\:Draft will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 2
+			path: app/Policies/QuotationPolicy.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Policies/QuotationPolicy.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$staff_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Policies/TicketPolicy.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:isClient\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/ChatDigestService.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Services\\Notifier\:\:deliver\(\) expects App\\Models\\User\|null, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/ChatDigestService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$client\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Services/Notifier.php
+
+		-
+			message: '#^Parameter \#2 \$project of class App\\Notifications\\DownPaymentInvoiceNotification constructor expects App\\Models\\Project, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Notifier.php
+
+		-
+			message: '#^Parameter \#2 \$project of class App\\Notifications\\QuotationExpiringNotification constructor expects App\\Models\\Project, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Notifier.php
+
+		-
+			message: '#^Parameter \#2 \$project of class App\\Notifications\\QuotationSentNotification constructor expects App\\Models\\Project, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Notifier.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Quotation\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Quotation\>\:\:\$reminded_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Quotation\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Quotation\>\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Anonymous function has an unused use \$actor\.$#'
+			identifier: closure.unusedUse
+			count: 1
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Anonymous function has an unused use \$client\.$#'
+			identifier: closure.unusedUse
+			count: 2
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Anonymous function has an unused use \$ip\.$#'
+			identifier: closure.unusedUse
+			count: 1
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Anonymous function has an unused use \$userAgent\.$#'
+			identifier: closure.unusedUse
+			count: 1
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Quotation\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Quotation\>\:\:isExpired\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Quotation\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Quotation\>\:\:isExpiringSoon\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Method App\\Services\\QuotationService\:\:accept\(\) should return array\{quotation\: App\\Models\\Quotation, invoice\: App\\Models\\Invoice\} but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Method App\\Services\\QuotationService\:\:createDownPaymentInvoice\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Method App\\Services\\QuotationService\:\:move\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Method App\\Services\\QuotationService\:\:reject\(\) should return App\\Models\\Quotation but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Method App\\Services\\QuotationService\:\:send\(\) should return App\\Models\\Quotation but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Offset ''invoice'' does not exist on null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Parameter \#1 \$quotation of event class App\\Events\\QuotationSent constructor expects App\\Models\\Quotation in App\\Events\\QuotationSent\:\:dispatch\(\), null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Property App\\Models\\Quotation\:\:\$status \(string\) does not accept App\\Enums\\QuotationStatus\:\:Draft\.$#'
+			identifier: assign.propertyType
+			count: 2
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Result of static method Illuminate\\Database\\Connection\:\:transaction\(\) \(void\) is used\.$#'
+			identifier: staticMethod.void
+			count: 3
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Result of \|\| is always true\.$#'
+			identifier: booleanOr.alwaysTrue
+			count: 5
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between null and null will always evaluate to false\.$#'
+			identifier: notIdentical.alwaysFalse
+			count: 2
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\QuotationStatus\:\:Draft will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 2
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\QuotationStatus\:\:Sent will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 4
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 6
+			path: app/Services/QuotationService.php
+
+		-
+			message: '#^Offset 1 on array\{0\: non\-empty\-string, 1\: ''''\|''\-'', 2\: numeric\-string, 3\?\: numeric\-string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Support/Money.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: app/Support/Money.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between int\<0, max\> and \-9223372036854775808\|\-2147483648 will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Support/Money.php
+
+		-
+			message: '#^Variable \$frac on left side of \?\?\= always exists and is not nullable\.$#'
+			identifier: nullCoalesce.variable
+			count: 1
+			path: app/Support/Money.php
+
+		-
+			message: '#^Method App\\Support\\Navigation\:\:itemsFor\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Support/Navigation.php
+
+		-
+			message: '#^Method App\\Support\\Navigation\:\:sidebarFor\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Support/Navigation.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$amount\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Support/QuotationComparison.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$description\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Support/QuotationComparison.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$hours\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Support/QuotationComparison.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$rate\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Support/QuotationComparison.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Support/QuotationComparison.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Support/QuotationComparison.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Support/QuotationSnapshot.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$description\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Support/QuotationSnapshot.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$hours\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Support/QuotationSnapshot.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$rate\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Support/QuotationSnapshot.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$sort_order\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Support/QuotationSnapshot.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Support/QuotationSnapshot.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Support/QuotationSnapshot.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Support/QuotationSnapshot.php
+
+		-
+			message: '#^Offset 1 on array\{non\-falsy\-string, ''''\|\(non\-falsy\-string&numeric\-string\), ''''\|\(non\-falsy\-string&numeric\-string\), numeric\-string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: database/migrations/2026_11_24_000002_add_blueprint_v2_schema.php
+
+		-
+			message: '#^Offset 2 on array\{non\-falsy\-string, ''''\|\(non\-falsy\-string&numeric\-string\), ''''\|\(non\-falsy\-string&numeric\-string\), numeric\-string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: database/migrations/2026_11_24_000002_add_blueprint_v2_schema.php

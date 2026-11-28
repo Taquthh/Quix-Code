@@ -66,7 +66,7 @@ class ExchangeRateService
 
             return $this->storeIdrPerUsd($idrPerUsd);
         } catch (Throwable $e) {
-            Log::warning('Pembaruan kurs melempar pengecualian.', ['exception' => $e::class]);
+            Log::warning('Pembaruan kurs melempar pengecualian.', ['error' => $e->getMessage()]);
         }
 
         return null;
@@ -112,8 +112,8 @@ class ExchangeRateService
     {
         $numeric = (float) $idrPerUsd;
 
-        if (! is_numeric($idrPerUsd) || ! is_finite($numeric) || $numeric < 1 || $numeric > 10_000_000) {
-            throw new InvalidArgumentException('Nilai kurs harus berupa angka finite antara 1 dan 10.000.000 IDR per USD.');
+        if ($numeric <= 0) {
+            throw new InvalidArgumentException('Nilai kurs harus lebih besar dari nol.');
         }
 
         $timestamp = $fetchedAt ?? now();

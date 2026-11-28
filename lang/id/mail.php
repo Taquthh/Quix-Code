@@ -10,9 +10,6 @@ return [
         'setup_hint' => 'Kami telah menyiapkan akun Client Portal untuk memantau penawaran, progres, dan tagihan Anda. Atur kata sandi akun Anda melalui tautan aman berikut:',
         'action' => 'Atur Kata Sandi Portal',
         'outro' => 'Tautan ini bersifat pribadi dan memiliki batas waktu berlaku demi keamanan akun Anda.',
-        'existing_hint' => 'Pengajuan baru Anda telah tercatat pada akun yang sudah ada.',
-        'portal_action' => 'Buka Client Portal',
-        'existing_outro' => 'Tim kami akan meninjau brief ini dan menghubungi Anda melalui email.'
     ],
 
     'quotation_sent' => [

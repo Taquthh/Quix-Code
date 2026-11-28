@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Http\Controllers\Portal;
+
+use App\Http\Controllers\Controller;
+use App\Models\Project;
+use App\Support\OnboardingSteps;
+use App\Support\ProjectNextActions;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
+
+/** Beranda portal: daftar proyek milik klien. Layout lengkap menyusul di Tahap 4. */
+class OverviewController extends Controller
+{
+    public function __invoke(Request $request): View
+    {
+        $projects = Project::query()
+            ->visibleTo($request->user())
+            ->withCount(['orderChats as unread_chats_count' => fn ($q) => $q->unreadFor($request->user())])
+            ->with(['quotations', 'invoices.payments'])
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('portal.overview', [
+            'projects' => $projects,
+            'onboarding' => OnboardingSteps::for($projects),
+            'actions' => $projects->mapWithKeys(fn (Project $project): array => [$project->getKey() => ProjectNextActions::for($project)])->all(),
+        ]);
+    }
+}

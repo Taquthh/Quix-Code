@@ -29,12 +29,12 @@ class SitemapController extends Controller
         foreach (self::STATIC_PATHS as $path) {
             foreach (SetLocale::SUPPORTED as $locale) {
                 $entries[] = [
-                    'loc' => $this->absolutePublicUrl($locale.$path),
+                    'loc' => url('/'.$locale.$path),
                     'lastmod' => $now,
                     'alternates' => [
-                        'id' => $this->absolutePublicUrl('id'.$path),
-                        'en' => $this->absolutePublicUrl('en'.$path),
-                        'x-default' => $this->absolutePublicUrl('id'.$path),
+                        'id' => url('/id'.$path),
+                        'en' => url('/en'.$path),
+                        'x-default' => url('/id'.$path),
                     ],
                 ];
             }
@@ -50,12 +50,12 @@ class SitemapController extends Controller
 
             foreach (SetLocale::SUPPORTED as $locale) {
                 $entries[] = [
-                    'loc' => $this->absolutePublicUrl($locale.'/works/'.$study->slug),
+                    'loc' => url('/'.$locale.'/works/'.$study->slug),
                     'lastmod' => $lastmod,
                     'alternates' => [
-                        'id' => $this->absolutePublicUrl('id/works/'.$study->slug),
-                        'en' => $this->absolutePublicUrl('en/works/'.$study->slug),
-                        'x-default' => $this->absolutePublicUrl('id/works/'.$study->slug),
+                        'id' => url('/id/works/'.$study->slug),
+                        'en' => url('/en/works/'.$study->slug),
+                        'x-default' => url('/id/works/'.$study->slug),
                     ],
                 ];
             }
@@ -66,10 +66,5 @@ class SitemapController extends Controller
         $xml = view($sitemapView, ['entries' => $entries])->render();
 
         return response($xml, 200, ['Content-Type' => 'application/xml; charset=UTF-8']);
-    }
-
-    private function absolutePublicUrl(string $path): string
-    {
-        return rtrim((string) config('app.url'), '/').'/'.ltrim($path, '/');
     }
 }

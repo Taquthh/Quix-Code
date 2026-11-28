@@ -23,9 +23,6 @@ Schedule::command('chat:digest')->everyFiveMinutes()->withoutOverlapping();
  */
 Schedule::command('github:reconcile')->dailyAt('02:00')->withoutOverlapping();
 
-/* Perbarui kurs dan beri peringatan jika data kurs belum tersedia atau sudah usang (T6-09). */
-Schedule::command('rates:update')->dailyAt('00:15')->withoutOverlapping();
-
 /* Pantau antrean (T5-09): memicu peringatan admin bila ada antrean yang menumpuk. */
 Schedule::command('queue:monitor', [
     collect((array) config('quix.queues'))->map(fn (string $queue) => config('queue.default').':'.$queue)->implode(','),

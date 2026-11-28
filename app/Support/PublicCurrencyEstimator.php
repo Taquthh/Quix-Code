@@ -74,10 +74,7 @@ class PublicCurrencyEstimator
             }
         }
 
-        $configuredFallback = (float) config('quix.exchange_rate.default_idr_per_usd', 16200);
-        $fallbackIdrPerUsd = is_finite($configuredFallback) && $configuredFallback >= 1 && $configuredFallback <= 10_000_000
-            ? $configuredFallback
-            : 16200.0;
+        $fallbackIdrPerUsd = max(1.0, (float) config('quix.exchange_rate.default_idr_per_usd', 16200));
         $fallbackRate = $baseMoney->currency === Currency::IDR
             ? number_format(1 / $fallbackIdrPerUsd, 8, '.', '')
             : number_format($fallbackIdrPerUsd, 8, '.', '');

@@ -45,6 +45,7 @@ return [
         'driver' => env('CAPTCHA_DRIVER', 'none'),
         'site_key' => env('CAPTCHA_SITE_KEY'),
         'secret_key' => env('CAPTCHA_SECRET_KEY'),
+        'verify_url' => env('CAPTCHA_VERIFY_URL', 'https://challenges.cloudflare.com/turnstile/v0/siteverify'),
     ],
 
     /* Analitik ramah privasi tanpa cookie pelacak (T6-07): none | plausible | umami. */
